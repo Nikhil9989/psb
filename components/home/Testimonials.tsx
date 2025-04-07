@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
-import { useElementOnScreen } from '@/hooks/useElementOnScreen';
+import { useElementOnScreen } from '../../src/hooks/useElementOnScreen';
 
 interface Testimonial {
   id: number;
