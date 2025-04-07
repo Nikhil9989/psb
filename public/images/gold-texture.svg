@@ -1,0 +1,31 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="gold-texture" width="40" height="40" patternUnits="userSpaceOnUse">
+      <!-- Fine lines texture -->
+      <path d="M0 20 L40 20" stroke="#FFC000" stroke-width="0.2" stroke-opacity="0.1"/>
+      <path d="M0 10 L40 10" stroke="#FFC000" stroke-width="0.2" stroke-opacity="0.1"/>
+      <path d="M0 30 L40 30" stroke="#FFC000" stroke-width="0.2" stroke-opacity="0.1"/>
+      <path d="M20 0 L20 40" stroke="#FFC000" stroke-width="0.2" stroke-opacity="0.1"/>
+      <path d="M10 0 L10 40" stroke="#FFC000" stroke-width="0.2" stroke-opacity="0.1"/>
+      <path d="M30 0 L30 40" stroke="#FFC000" stroke-width="0.2" stroke-opacity="0.1"/>
+      
+      <!-- Subtle dots -->
+      <circle cx="10" cy="10" r="0.5" fill="#FFC000" fill-opacity="0.2"/>
+      <circle cx="30" cy="10" r="0.5" fill="#FFC000" fill-opacity="0.2"/>
+      <circle cx="10" cy="30" r="0.5" fill="#FFC000" fill-opacity="0.2"/>
+      <circle cx="30" cy="30" r="0.5" fill="#FFC000" fill-opacity="0.2"/>
+      <circle cx="20" cy="20" r="0.5" fill="#FFC000" fill-opacity="0.2"/>
+      
+      <!-- Larger decorative elements -->
+      <circle cx="0" cy="0" r="1" fill="#FFC000" fill-opacity="0.1"/>
+      <circle cx="40" cy="0" r="1" fill="#FFC000" fill-opacity="0.1"/>
+      <circle cx="0" cy="40" r="1" fill="#FFC000" fill-opacity="0.1"/>
+      <circle cx="40" cy="40" r="1" fill="#FFC000" fill-opacity="0.1"/>
+      
+      <!-- Very subtle diagonal lines -->
+      <path d="M0 0 L40 40" stroke="#FFC000" stroke-width="0.1" stroke-opacity="0.05"/>
+      <path d="M40 0 L0 40" stroke="#FFC000" stroke-width="0.1" stroke-opacity="0.05"/>
+    </pattern>
+  </defs>
+  <rect width="200" height="200" fill="url(#gold-texture)"/>
+</svg>
