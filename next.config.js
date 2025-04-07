@@ -12,7 +12,7 @@ const nextConfig = {
   // Next.js 14 static export configuration
   output: 'export',
   // No base path needed
-  basePath: '',
+  basePath: '/psb',
   trailingSlash: false,
 };
 
