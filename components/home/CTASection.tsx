@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useElementOnScreen } from '../../src/hooks/useElementOnScreen';
 import Button from '../common/Button';
+import Link from 'next/link';
 
 const CTASection = () => {
   const [ref, isVisible] = useElementOnScreen({ threshold: 0.1 });
@@ -24,22 +25,24 @@ const CTASection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button 
-              variant="primary" 
-              size="lg" 
-              href="/apply"
-              className="bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-400 border-0"
-            >
-              Apply Now
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              href="/contact"
-              className="border-white text-white hover:bg-white/10"
-            >
-              Contact Us
-            </Button>
+            <Link href="/apply">
+              <Button 
+                variant="primary" 
+                size="lg" 
+                className="bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-400 border-0"
+              >
+                Apply Now
+              </Button>
+            </Link>
+            <Link href="/contact">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="border-white text-white hover:bg-white/10"
+              >
+                Contact Us
+              </Button>
+            </Link>
           </div>
           
           <p className="mt-8 text-gray-300 text-sm">
