@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useElementOnScreen } from '@/hooks/useElementOnScreen';
+import { useElementOnScreen } from '../../src/hooks/useElementOnScreen';
 import Image from 'next/image';
 
 const AboutMission = () => {
