@@ -1,14 +1,24 @@
-import { useState, useEffect, RefObject } from 'react';
+import { useState, useEffect, useRef, RefObject } from 'react';
 
-export function useElementOnScreen(ref: RefObject<HTMLElement>, rootMargin: string = '0px'): boolean {
+interface UseElementOnScreenOptions {
+  threshold?: number;
+  rootMargin?: string;
+}
+
+export function useElementOnScreen(options: UseElementOnScreenOptions = {}): [RefObject<HTMLDivElement>, boolean] {
+  const ref = useRef<HTMLDivElement>(null);
   const [isIntersecting, setIsIntersecting] = useState<boolean>(false);
+  const { threshold = 0, rootMargin = '0px' } = options;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsIntersecting(entry.isIntersecting);
       },
-      { rootMargin }
+      { 
+        rootMargin,
+        threshold 
+      }
     );
 
     const currentRef = ref.current;
@@ -21,7 +31,7 @@ export function useElementOnScreen(ref: RefObject<HTMLElement>, rootMargin: stri
         observer.unobserve(currentRef);
       }
     };
-  }, [ref, rootMargin]);
+  }, [threshold, rootMargin]);
 
-  return isIntersecting;
+  return [ref, isIntersecting];
 }
