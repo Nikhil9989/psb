@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useElementOnScreen } from '../../src/hooks/useElementOnScreen';
@@ -5,7 +7,7 @@ import Image from 'next/image';
 
 const AboutMission = () => {
   const ref = useRef(null);
-  const isVisible = useElementOnScreen(ref);
+  const [isVisible] = useElementOnScreen({ ref, threshold: 0.1 });
 
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
