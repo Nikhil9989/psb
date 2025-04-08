@@ -275,7 +275,7 @@ const ApplicationStatus = () => {
                   Our team is currently reviewing your application. You'll receive an email notification when there are any updates to your application status.
                 </p>
                 <p className="text-obsidian-400 text-sm">
-                  Have questions? Contact us at <a href="mailto:admissions@skillbridge.edu" className="text-gold-400 hover:underline">admissions@skillbridge.edu</a>
+                  Have questions? Contact us at <a href="mailto:itsmemncworks@outlook.com" className="text-gold-400 hover:underline">itsmemncworks@outlook.com</a>
                 </p>
               </div>
             </div>
