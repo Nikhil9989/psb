@@ -6,7 +6,8 @@ import {
   FaUsers, 
   FaBrain, 
   FaChartLine, 
-  FaProjectDiagram 
+  FaProjectDiagram,
+  FaExternalLinkAlt
 } from 'react-icons/fa';
 
 const solutionPoints = [
@@ -153,10 +154,38 @@ const SolutionOverview = () => {
           variants={counterVariants}
           className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 max-w-4xl mx-auto"
         >
-          <StatCard number={51.25} suffix="%" label="Employment Ready Youth" />
-          <StatCard number={3.5} suffix="LPA" label="Average Starting Salary" />
-          <StatCard number={70} suffix="%" label="Placement Rate" />
-          <StatCard number={15} suffix="+" label="Partner Institutions" />
+          <StatCard 
+            number={47.38} 
+            suffix="%" 
+            label="Employment Ready Youth"
+            source="India Skills Report 2023" 
+            link="https://www.aicte-india.org/sites/default/files/India%20Skills%20Report%202023.pdf"
+            benchmark={true}
+          />
+          <StatCard 
+            number={4.5} 
+            suffix="LPA" 
+            label="Tech Avg Starting Salary"
+            source="AmbitionBox 2024" 
+            link="https://www.ambitionbox.com/salaries/software-engineer-salary-for-freshers"
+            benchmark={true}
+          />
+          <StatCard 
+            number={82} 
+            suffix="%" 
+            label="Tech Education-Job Mismatch"
+            source="Aspiring Minds Report" 
+            link="https://www.aspiringminds.com/research-reports/"
+            benchmark={true}
+          />
+          <StatCard 
+            number={7} 
+            suffix="+" 
+            label="Distinct Skills Required"
+            source="WEF Future of Jobs" 
+            link="https://www.weforum.org/reports/the-future-of-jobs-report-2023/"
+            benchmark={true}
+          />
         </motion.div>
 
         <motion.div
@@ -185,6 +214,10 @@ const SolutionOverview = () => {
             </div>
           </div>
         </motion.div>
+        
+        <div className="mt-4 text-center">
+          <p className="text-obsidian-400 text-xs italic">All statistics represent industry benchmarks from verified sources that inform our program targets.</p>
+        </div>
       </div>
     </section>
   );
@@ -194,19 +227,40 @@ interface StatCardProps {
   number: number;
   suffix: string;
   label: string;
+  source?: string;
+  link?: string;
+  benchmark?: boolean;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ number, suffix, label }) => {
+const StatCard: React.FC<StatCardProps> = ({ number, suffix, label, source, link, benchmark }) => {
   return (
     <motion.div 
       variants={numberVariants}
-      className="bg-obsidian-800/50 backdrop-blur-sm p-4 rounded-lg border border-gold-500/20 text-center"
+      className="bg-obsidian-800/50 backdrop-blur-sm p-4 rounded-lg border border-gold-500/20 text-center relative"
     >
-      <div className="flex items-center justify-center space-x-1">
+      {benchmark && (
+        <div className="absolute -top-2 left-0 right-0 mx-auto">
+          <span className="bg-gold-500/90 text-obsidian-900 text-xs px-2 py-0.5 rounded-full font-medium">
+            Industry Benchmark
+          </span>
+        </div>
+      )}
+      <div className="flex items-center justify-center space-x-1 mt-2">
         <span className="text-2xl md:text-3xl font-bold text-gold-500">{number}</span>
         <span className="text-xl md:text-2xl font-bold text-gold-400">{suffix}</span>
       </div>
       <p className="text-obsidian-300 text-sm mt-2">{label}</p>
+      {source && link && (
+        <a 
+          href={link} 
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-1.5 inline-flex items-center text-gold-500/70 hover:text-gold-500 text-xs group transition-colors duration-200"
+        >
+          Source: {source}
+          <FaExternalLinkAlt className="ml-1 h-2.5 w-2.5 opacity-70 group-hover:opacity-100 transition-opacity" />
+        </a>
+      )}
     </motion.div>
   );
 };
