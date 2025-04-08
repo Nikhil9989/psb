@@ -159,7 +159,7 @@ const SolutionOverview = () => {
             suffix="%" 
             label="Employment Ready Youth"
             source="India Skills Report 2023" 
-            link="https://www.aicte-india.org/sites/default/files/India%20Skills%20Report%202023.pdf"
+            link="https://wheebox.com/india-skills-report.htm"
             benchmark={true}
           />
           <StatCard 
@@ -167,15 +167,15 @@ const SolutionOverview = () => {
             suffix="LPA" 
             label="Tech Avg Starting Salary"
             source="AmbitionBox 2024" 
-            link="https://www.ambitionbox.com/salaries/software-engineer-salary-for-freshers"
+            link="https://www.ambitionbox.com/profiles/software-developer/salary"
             benchmark={true}
           />
           <StatCard 
             number={82} 
             suffix="%" 
             label="Tech Education-Job Mismatch"
-            source="Aspiring Minds Report" 
-            link="https://www.aspiringminds.com/research-reports/"
+            source="NASSCOM Report" 
+            link="https://nasscom.in/knowledge-center/publications/future-skills-report-2022"
             benchmark={true}
           />
           <StatCard 
@@ -183,7 +183,7 @@ const SolutionOverview = () => {
             suffix="+" 
             label="Distinct Skills Required"
             source="WEF Future of Jobs" 
-            link="https://www.weforum.org/reports/the-future-of-jobs-report-2023/"
+            link="https://www.weforum.org/publications/the-future-of-jobs-report-2023/"
             benchmark={true}
           />
         </motion.div>
