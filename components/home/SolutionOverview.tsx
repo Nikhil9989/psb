@@ -155,11 +155,11 @@ const SolutionOverview = () => {
           className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 max-w-4xl mx-auto"
         >
           <StatCard 
-            number={47.38} 
+            number={50.3} 
             suffix="%" 
             label="Employment Ready Youth"
             source="India Skills Report 2023" 
-            link="https://wheebox.com/india-skills-report.htm"
+            link="https://do3n1uzkew47z.cloudfront.net/siteassets/pdf/ISR_Report_2023.pdf"
             benchmark={true}
           />
           <StatCard 
@@ -167,15 +167,15 @@ const SolutionOverview = () => {
             suffix="LPA" 
             label="Tech Avg Starting Salary"
             source="AmbitionBox 2024" 
-            link="https://www.ambitionbox.com/profiles/software-developer/salary"
+            link="https://www.ambitionbox.com/profile/software-developer-salary"
             benchmark={true}
           />
           <StatCard 
-            number={82} 
+            number={75} 
             suffix="%" 
             label="Tech Education-Job Mismatch"
-            source="NASSCOM Report" 
-            link="https://nasscom.in/knowledge-center/publications/future-skills-report-2022"
+            source="Future Skills Report" 
+            link="https://futureskills.nasscom.in/"
             benchmark={true}
           />
           <StatCard 
