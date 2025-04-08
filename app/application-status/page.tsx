@@ -96,18 +96,18 @@ const ApplicationStatusPage = () => {
                 <div className="border-t border-gold-500/10 pt-4">
                   <p className="font-medium text-gold-300">Email Support:</p>
                   <p className="text-obsidian-200">
-                    <a href="mailto:admissions@skillbridge.edu" className="text-gold-400 hover:underline">
-                      admissions@skillbridge.edu
+                    <a href="mailto:itsmemncworks@outlook.com" className="text-gold-400 hover:underline">
+                      itsmemncworks@outlook.com
                     </a>
                   </p>
                 </div>
                 <div className="border-t border-gold-500/10 pt-4">
                   <p className="font-medium text-gold-300">Phone Support:</p>
-                  <p className="text-obsidian-200">+91 98765 43210 (Mon-Fri, 10am-6pm IST)</p>
+                  <p className="text-obsidian-200">+91 8247485295 (Mon-Fri, 10am-6pm IST)</p>
                 </div>
                 <div className="border-t border-gold-500/10 pt-4">
                   <p className="font-medium text-gold-300">WhatsApp:</p>
-                  <p className="text-obsidian-200">+91 98765 43210</p>
+                  <p className="text-obsidian-200">+91 8247485295</p>
                 </div>
               </div>
             </div>
