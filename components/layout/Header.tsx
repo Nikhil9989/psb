@@ -87,16 +87,16 @@ const Header = () => {
           className="hidden md:block"
         >
           <Link
-            href="/contact"
+            href="/application-status"
             className="btn btn-outline-gold px-4 py-2 text-xs font-medium mr-3 group relative overflow-hidden"
           >
-            <span className="relative z-10">Contact Us</span>
+            <span className="relative z-10">Application Status</span>
           </Link>
           <Link
-            href="/enroll"
+            href="/apply"
             className="btn btn-gold px-5 py-2 text-xs font-medium group relative overflow-hidden"
           >
-            <span className="relative z-10">Join Next Cohort</span>
+            <span className="relative z-10">Apply Now</span>
             {/* Gold shimmer effect */}
             <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-gold-500/0 via-gold-500/30 to-gold-500/0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </Link>
@@ -140,18 +140,18 @@ const Header = () => {
                 </Link>
               ))}
               <Link
-                href="/contact"
+                href="/application-status"
                 className="btn btn-outline-gold w-full text-center mt-2"
                 onClick={() => setIsOpen(false)}
               >
-                Contact Us
+                Application Status
               </Link>
               <Link
-                href="/enroll"
+                href="/apply"
                 className="btn btn-gold w-full text-center mt-2"
                 onClick={() => setIsOpen(false)}
               >
-                Join Next Cohort
+                Apply Now
               </Link>
             </nav>
           </div>
