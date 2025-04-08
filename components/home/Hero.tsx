@@ -83,7 +83,7 @@ const Hero = () => {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="text-base md:text-lg text-obsidian-200 mb-8 max-w-xl mx-auto lg:mx-0"
             >
-              SKILL BRIDGE combines industry expertise with local infrastructure to deliver complete domain mastery, not just isolated skills. Our hybrid approach brings quality education directly to your city with personalized learning paths.
+              SKILL BRIDGE brings industry-grade education to emerging cities across India, combining expert mentorship with local infrastructure to deliver complete domain mastery. Our hybrid approach transforms tier-2 and tier-3 talent through personalized learning paths.
             </motion.p>
             
             <motion.div
