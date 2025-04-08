@@ -63,7 +63,7 @@ const Hero = () => {
               className="mb-6"
             >
               <span className="inline-block px-4 py-1.5 bg-obsidian-800 border border-gold-500/30 text-gold-500 rounded-full text-sm font-medium tracking-wide">
-                Now Enrolling in Tier-2 & Tier-3 Cities
+                Cohort 7 Enrolling Now - Limited Seats
               </span>
             </motion.div>
             
