@@ -32,7 +32,7 @@ const solutionPoints = [
     icon: <FaProjectDiagram className="h-6 w-6" />,
     title: 'Multiple Career Pathways',
     description:
-      'Our approach offers flexible pathways to success through employment, remote work, entrepreneurship, and freelancing, ensuring you're not dependent on limited local job markets.',
+      'Our approach offers flexible pathways to success through employment, remote work, entrepreneurship, and freelancing, ensuring you\'re not dependent on limited local job markets.',
   },
 ];
 
