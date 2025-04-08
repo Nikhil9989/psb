@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -62,7 +63,7 @@ const Hero = () => {
               className="mb-6"
             >
               <span className="inline-block px-4 py-1.5 bg-obsidian-800 border border-gold-500/30 text-gold-500 rounded-full text-sm font-medium tracking-wide">
-                Cohort 7 Enrolling Now
+                Now Enrolling in Tier-2 & Tier-3 Cities
               </span>
             </motion.div>
             
@@ -72,8 +73,8 @@ const Hero = () => {
               transition={{ delay: 0.3, duration: 0.8 }}
               className="font-display mb-6 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight"
             >
-              Transform Your <span className="gold-gradient-text">Potential</span> Through <br className="hidden md:block" />
-              <span className="gold-gradient-text">Domain Mastery</span>
+              Bridge the <span className="gold-gradient-text">Skill Gap</span> with 
+              <span className="gold-gradient-text"> Local Learning & Global Opportunities</span>
             </motion.h1>
             
             <motion.p
@@ -82,7 +83,7 @@ const Hero = () => {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="text-base md:text-lg text-obsidian-200 mb-8 max-w-xl mx-auto lg:mx-0"
             >
-              SKILL BRIDGE offers cohort-based learning journeys that transform theoretical knowledge into practical, industry-ready expertise through our revolutionary 5-phase progression system.
+              SKILL BRIDGE combines industry expertise with local infrastructure to deliver complete domain mastery, not just isolated skills. Our hybrid approach brings quality education directly to your city with personalized learning paths.
             </motion.p>
             
             <motion.div
@@ -93,15 +94,20 @@ const Hero = () => {
             >
               <Link 
                 href="/enroll"
-                className="btn btn-gold px-8 py-3 text-sm"
+                className="btn btn-gold px-8 py-3 text-sm group relative overflow-hidden"
               >
-                Join Next Cohort
+                <span className="relative z-10 flex items-center">
+                  Apply Now 
+                  <ChevronRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+                {/* Gold shimmer effect */}
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-gold-500/0 via-gold-500/30 to-gold-500/0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </Link>
               <Link 
                 href="/approach"
                 className="btn btn-outline-gold px-8 py-3 text-sm"
               >
-                Explore Our Approach
+                How It Works
               </Link>
             </motion.div>
             
@@ -109,21 +115,31 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7, duration: 0.8 }}
-              className="mt-10 flex items-center justify-center lg:justify-start text-xs md:text-sm text-obsidian-300"
+              className="mt-10 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start text-xs md:text-sm text-obsidian-300"
             >
-              <div className="flex -space-x-2 mr-3">
-                {[...Array(4)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-8 h-8 rounded-full border-2 border-obsidian-800 bg-obsidian-700 flex items-center justify-center shadow-sm"
-                  >
-                    <span className="text-xs font-medium text-gold-500">
-                      {String.fromCharCode(65 + i)}
-                    </span>
-                  </div>
-                ))}
+              <div className="flex items-center gap-2">
+                <div className="flex -space-x-2 mr-1">
+                  {[...Array(4)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-8 h-8 rounded-full border-2 border-obsidian-800 bg-obsidian-700 flex items-center justify-center shadow-sm"
+                    >
+                      <span className="text-xs font-medium text-gold-500">
+                        {String.fromCharCode(65 + i)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <span>Joined by <strong className="text-gold-500">5000+</strong> learners</span>
               </div>
-              <span>Joined by <strong className="text-gold-500">5000+</strong> learners across India</span>
+              <div className="flex items-center gap-2">
+                <div className="px-3 py-1 rounded-full bg-obsidian-800/60 border border-gold-500/20">
+                  <span className="text-xs font-medium text-gold-500">15+ Partner Institutions</span>
+                </div>
+                <div className="px-3 py-1 rounded-full bg-obsidian-800/60 border border-gold-500/20">
+                  <span className="text-xs font-medium text-gold-500">12 Cities</span>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
           
@@ -209,8 +225,8 @@ const Hero = () => {
                   
                   <div className="mt-4 border-t border-obsidian-700 pt-4 flex justify-between items-center">
                     <div>
-                      <div className="text-xs text-obsidian-400">Current Cohort</div>
-                      <div className="text-gold-500 font-medium">Cohort #7</div>
+                      <div className="text-xs text-obsidian-400">Learning Model</div>
+                      <div className="text-gold-500 font-medium">Hybrid (Online + Offline)</div>
                     </div>
                     <div>
                       <div className="text-xs text-obsidian-400">Starting</div>
