@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type FAQItem = {
   question: string;
@@ -47,21 +48,23 @@ const FAQ = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-8">
-      <h2 className="text-2xl font-bold mb-6 text-center">Frequently Asked Questions</h2>
+    <div className="bg-obsidian-800 rounded-xl shadow-gold-glow p-8 border border-gold-500/20 relative overflow-hidden">
+      {/* Background glow elements */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/5 rounded-full blur-xl -mr-32 -mt-32"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-gold-500/5 rounded-full blur-xl -ml-32 -mb-32"></div>
       
-      <div className="space-y-4">
+      <div className="space-y-4 relative z-10">
         {faqItems.map((faq, index) => (
           <div 
             key={index} 
-            className="border border-gray-200 rounded-lg overflow-hidden"
+            className="border border-gold-500/20 rounded-lg overflow-hidden bg-obsidian-800/70 backdrop-blur-sm transition duration-300 hover:border-gold-500/40"
           >
             <button
-              className="flex justify-between items-center w-full p-4 text-left bg-gray-50 hover:bg-gray-100 transition-colors"
+              className="flex justify-between items-center w-full p-5 text-left transition-colors"
               onClick={() => toggleFAQ(index)}
             >
-              <span className="font-medium text-gray-900">{faq.question}</span>
-              <span className="text-primary">
+              <span className="font-medium text-gold-400">{faq.question}</span>
+              <span className={`transition-colors duration-300 ${openIndex === index ? 'text-gold-500' : 'text-gold-500/70'}`}>
                 {openIndex === index ? (
                   <ChevronUp className="h-5 w-5" />
                 ) : (
@@ -70,21 +73,29 @@ const FAQ = () => {
               </span>
             </button>
             
-            <div 
-              className={`overflow-hidden transition-all duration-300 ${
-                openIndex === index ? 'max-h-96 p-4' : 'max-h-0'
-              }`}
-            >
-              <p className="text-gray-700">{faq.answer}</p>
-            </div>
+            <AnimatePresence>
+              {openIndex === index && (
+                <motion.div 
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="p-5 pt-0 border-t border-gold-500/10">
+                    <p className="text-obsidian-200">{faq.answer}</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         ))}
       </div>
       
       <div className="mt-8 text-center">
-        <p className="text-gray-600">
+        <p className="text-obsidian-300">
           Still have questions? Feel free to{" "}
-          <a href="/contact" className="text-primary hover:underline font-medium">
+          <a href="/contact" className="text-gold-500 hover:underline font-medium">
             contact us
           </a>{" "}
           for more information.
