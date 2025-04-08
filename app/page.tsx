@@ -8,6 +8,7 @@ import KeyFeatures from '@/components/home/KeyFeatures';
 import MissionVision from '@/components/home/MissionVision';
 import ContactUs from '@/components/home/ContactUs';
 import CallToAction from '@/components/home/CallToAction';
+import ApplicationCTA from '@/components/home/ApplicationCTA';
 
 export default function HomePage() {
   return (
@@ -20,6 +21,7 @@ export default function HomePage() {
       <MissionVision />
       <ContactUs />
       <CallToAction />
+      <ApplicationCTA />
     </PageLayout>
   );
 }
