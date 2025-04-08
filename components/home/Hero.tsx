@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Users, BookOpen, Star } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -63,7 +63,7 @@ const Hero = () => {
               className="mb-6"
             >
               <span className="inline-block px-4 py-1.5 bg-obsidian-800 border border-gold-500/30 text-gold-500 rounded-full text-sm font-medium tracking-wide">
-                Cohort 7 Enrolling Now - Limited Seats
+                Founding Cohort - Limited Seats Available
               </span>
             </motion.div>
             
@@ -117,28 +117,17 @@ const Hero = () => {
               transition={{ delay: 0.7, duration: 0.8 }}
               className="mt-10 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start text-xs md:text-sm text-obsidian-300"
             >
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2 mr-1">
-                  {[...Array(4)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="w-8 h-8 rounded-full border-2 border-obsidian-800 bg-obsidian-700 flex items-center justify-center shadow-sm"
-                    >
-                      <span className="text-xs font-medium text-gold-500">
-                        {String.fromCharCode(65 + i)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <span>Joined by <strong className="text-gold-500">5000+</strong> learners</span>
+              <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-obsidian-800/60 border border-gold-500/20">
+                <Users className="w-4 h-4 text-gold-500" />
+                <span className="text-xs font-medium">Industry Expert Mentors</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="px-3 py-1 rounded-full bg-obsidian-800/60 border border-gold-500/20">
-                  <span className="text-xs font-medium text-gold-500">15+ Partner Institutions</span>
-                </div>
-                <div className="px-3 py-1 rounded-full bg-obsidian-800/60 border border-gold-500/20">
-                  <span className="text-xs font-medium text-gold-500">12 Cities</span>
-                </div>
+              <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-obsidian-800/60 border border-gold-500/20">
+                <BookOpen className="w-4 h-4 text-gold-500" />
+                <span className="text-xs font-medium">Domain-Based Curriculum</span>
+              </div>
+              <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-obsidian-800/60 border border-gold-500/20">
+                <Star className="w-4 h-4 text-gold-500" />
+                <span className="text-xs font-medium">Personalized Learning</span>
               </div>
             </motion.div>
           </motion.div>
