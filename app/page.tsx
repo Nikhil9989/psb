@@ -6,6 +6,8 @@ import SolutionOverview from '@/components/home/SolutionOverview';
 import DomainApproach from '@/components/home/DomainApproach';
 import KeyFeatures from '@/components/home/KeyFeatures';
 import InstitutionalPartnerships from '@/components/home/InstitutionalPartnerships';
+import TeamMentors from '@/components/home/TeamMentors';
+import Testimonials from '@/components/home/Testimonials';
 import PricingAccess from '@/components/home/PricingAccess';
 import MissionVision from '@/components/home/MissionVision';
 import ContactUs from '@/components/home/ContactUs';
@@ -21,6 +23,8 @@ export default function HomePage() {
       <DomainApproach />
       <KeyFeatures />
       <InstitutionalPartnerships />
+      <TeamMentors />
+      <Testimonials />
       <PricingAccess />
       <MissionVision />
       <ContactUs />
