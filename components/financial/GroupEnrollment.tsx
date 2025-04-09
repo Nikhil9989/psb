@@ -31,7 +31,7 @@ const benefits = [
   {
     icon: <FaUsers className="h-6 w-6" />,
     title: 'Enhanced Collaboration',
-    description: 'Work on projects together with pre-established teams that understand each other\\'s strengths and working styles.',
+    description: 'Work on projects together with pre-established teams that understand each other and their working styles.',
   },
   {
     icon: <FaUserGraduate className="h-6 w-6" />,
