@@ -52,7 +52,7 @@ const studentBenefits = [
   {
     icon: <FaHandshake className="h-5 w-5" />,
     title: 'Industry Connections',
-    description: 'Tap into each institution's local industry partners and alumni networks for career opportunities.',
+    description: 'Tap into each institution\'s local industry partners and alumni networks for career opportunities.',
   },
 ];
 
