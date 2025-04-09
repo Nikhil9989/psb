@@ -48,6 +48,9 @@ const mockApplicationData = {
   ]
 };
 
+// Mock application IDs for static generation
+const applicationIds = ['SB-271503', 'SB-271504', 'SB-271505']; 
+
 // Status options for dropdown
 const statusOptions = [
   { value: 'pending', label: 'Pending', icon: Clock },
@@ -56,6 +59,13 @@ const statusOptions = [
   { value: 'accepted', label: 'Accepted', icon: CheckCircle },
   { value: 'rejected', label: 'Rejected', icon: X }
 ];
+
+// This function tells Next.js which dynamic routes to pre-render
+export function generateStaticParams() {
+  return applicationIds.map(id => ({
+    id: id
+  }));
+}
 
 export default function ApplicationDetailPage({ params }: { params: { id: string } }) {
   const [application, setApplication] = useState(mockApplicationData);
