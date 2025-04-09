@@ -88,8 +88,7 @@ const ContactUs = () => {
                 </div>
                 <div>
                   <h4 className="text-sm text-obsidian-300 mb-1">Email</h4>
-                  <p className="text-white">contact@skillbridge.edu</p>
-                  <p className="text-white">admissions@skillbridge.edu</p>
+                  <p className="text-white">itsmemncworks@outlook.com</p>
                 </div>
               </div>
               
@@ -99,8 +98,7 @@ const ContactUs = () => {
                 </div>
                 <div>
                   <h4 className="text-sm text-obsidian-300 mb-1">Phone</h4>
-                  <p className="text-white">+91 9876 543 210</p>
-                  <p className="text-white">+91 1234 567 890</p>
+                  <p className="text-white">+91 8247485295</p>
                 </div>
               </div>
               
