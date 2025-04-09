@@ -26,7 +26,7 @@ const teamMembers: TeamMember[] = [
     id: 1,
     name: 'Arjun Sharma',
     role: 'CEO & Education Lead',
-    image: '/team/founder1.jpg',
+    image: '/images/team/founder1.jpg',
     bio: 'Former education technology executive with 10+ years of experience in curriculum development and educational partnerships. Arjun founded SKILL BRIDGE to transform how technical skills are taught in tier-2/3 cities.',
     expertise: ['Curriculum Design', 'Education Technology', 'Institutional Partnerships'],
     socialLinks: {
@@ -40,7 +40,7 @@ const teamMembers: TeamMember[] = [
     id: 2,
     name: 'Priya Mehta',
     role: 'CTO & Product Lead',
-    image: '/team/founder2.jpg',
+    image: '/images/team/founder2.jpg',
     bio: 'Full-stack developer and engineering leader who previously scaled technical teams at two successful startups. Priya oversees SKILL BRIDGE\'s technology infrastructure and product development, focusing on creating accessible learning experiences.',
     expertise: ['Software Architecture', 'Mobile-First Development', 'Technical Leadership'],
     socialLinks: {
@@ -53,7 +53,7 @@ const teamMembers: TeamMember[] = [
     id: 3,
     name: 'Vikram Singh',
     role: 'Operations & Student Experience Lead',
-    image: '/team/founder3.jpg',
+    image: '/images/team/founder3.jpg',
     bio: 'Former operations director at a leading educational institution with expertise in creating exceptional student experiences. Vikram ensures smooth day-to-day operations and maintains high-quality student support systems.',
     expertise: ['Operations Management', 'Student Success', 'Process Optimization'],
     socialLinks: {
@@ -65,7 +65,7 @@ const teamMembers: TeamMember[] = [
     id: 4,
     name: 'Neha Gupta',
     role: 'Web Development Mentor',
-    image: '/team/mentor1.jpg',
+    image: '/images/team/mentor1.jpg',
     bio: 'Senior full-stack developer with 8+ years of experience at leading tech companies. Neha specializes in React, Node.js, and cloud infrastructure, bringing real-world expertise to the Web Development domain.',
     expertise: ['React.js', 'Node.js', 'Cloud Infrastructure', 'Full-Stack Development'],
     socialLinks: {
@@ -78,7 +78,7 @@ const teamMembers: TeamMember[] = [
     id: 5,
     name: 'Rahul Kumar',
     role: 'Data Science Mentor',
-    image: '/team/mentor2.jpg',
+    image: '/images/team/mentor2.jpg',
     bio: 'Data scientist with experience at top analytics firms and a passion for making complex concepts accessible. Rahul brings hands-on industry experience to the Data Science domain, helping students master practical applications.',
     expertise: ['Machine Learning', 'Python', 'Data Visualization', 'Statistical Analysis'],
     socialLinks: {
@@ -91,7 +91,7 @@ const teamMembers: TeamMember[] = [
     id: 6,
     name: 'Ananya Desai',
     role: 'UI/UX Design Mentor',
-    image: '/team/mentor3.jpg',
+    image: '/images/team/mentor3.jpg',
     bio: 'UI/UX designer with a background in psychology and design thinking. Ananya helps students understand both the technical and human aspects of digital product design through real-world projects.',
     expertise: ['UI Design', 'UX Research', 'Design Systems', 'Prototyping'],
     socialLinks: {
