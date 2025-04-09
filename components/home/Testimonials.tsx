@@ -99,61 +99,71 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
   const showTransformation = testimonial.storyType === 'transformation' && testimonial.beforeSkills && testimonial.afterSkills;
   
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 flex flex-col h-full">
-      <div className="flex items-start mb-6">
-        <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-blue-100 flex-shrink-0">
-          <Image
-            src={testimonial.image}
-            alt={testimonial.name}
-            fill
-            className="object-cover"
-          />
-        </div>
-        <div className="ml-4">
-          <h3 className="text-xl font-bold text-gray-900">{testimonial.name}</h3>
-          <p className="text-blue-600">{testimonial.role}</p>
-          <p className="text-gray-600">{testimonial.company}</p>
-          {testimonial.location && (
-            <p className="text-gray-500 text-sm">{testimonial.location}</p>
-          )}
-          <div className="flex mt-1">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star
-                key={i}
-                size={16}
-                fill={i < testimonial.rating ? '#F59E0B' : 'none'}
-                stroke={i < testimonial.rating ? '#F59E0B' : '#CBD5E0'}
-              />
-            ))}
+    <motion.div 
+      className="bg-white rounded-2xl shadow-lg p-6 md:p-8 flex flex-col h-full border border-gray-100 relative overflow-hidden"
+      whileHover={{ y: -5, boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)' }}
+      transition={{ duration: 0.3 }}
+    >
+      {/* Decorative elements */}
+      <div className="absolute -right-6 -top-6 w-12 h-12 rounded-full bg-indigo-50 opacity-40"></div>
+      <div className="absolute -left-6 -bottom-6 w-12 h-12 rounded-full bg-purple-50 opacity-40"></div>
+      
+      <div className="relative z-10">
+        <div className="flex items-start mb-6">
+          <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-indigo-100 flex-shrink-0">
+            <Image
+              src={testimonial.image}
+              alt={testimonial.name}
+              fill
+              className="object-cover"
+            />
           </div>
-        </div>
-      </div>
-
-      <div className="mb-6 flex-grow">
-        <div className="text-gray-700 italic relative pl-6">
-          <Quote size={18} className="absolute left-0 top-0 text-blue-400 opacity-60" />
-          {testimonial.quote}
-        </div>
-      </div>
-
-      {showTransformation && (
-        <div className="mt-auto">
-          <div className="border-t border-gray-200 pt-4 mt-4">
-            <h4 className="font-semibold text-gray-900 mb-2">Skill Transformation</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-gray-50 p-3 rounded">
-                <p className="text-sm text-gray-600 font-medium mb-1">Before</p>
-                <p className="text-sm">{testimonial.beforeSkills}</p>
-              </div>
-              <div className="bg-blue-50 p-3 rounded">
-                <p className="text-sm text-blue-800 font-medium mb-1">After</p>
-                <p className="text-sm">{testimonial.afterSkills}</p>
-              </div>
+          <div className="ml-4">
+            <h3 className="text-xl font-bold text-gray-900">{testimonial.name}</h3>
+            <p className="text-indigo-600">{testimonial.role}</p>
+            <p className="text-gray-600">{testimonial.company}</p>
+            {testimonial.location && (
+              <p className="text-gray-500 text-sm">{testimonial.location}</p>
+            )}
+            <div className="flex mt-1">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star
+                  key={i}
+                  size={16}
+                  fill={i < testimonial.rating ? '#6366F1' : 'none'}
+                  stroke={i < testimonial.rating ? '#6366F1' : '#CBD5E0'}
+                />
+              ))}
             </div>
           </div>
         </div>
-      )}
-    </div>
+
+        <div className="mb-6 flex-grow">
+          <div className="text-gray-700 italic relative pl-6">
+            <Quote size={18} className="absolute left-0 top-0 text-indigo-400 opacity-60" />
+            {testimonial.quote}
+          </div>
+        </div>
+
+        {showTransformation && (
+          <div className="mt-auto">
+            <div className="border-t border-gray-200 pt-4 mt-4">
+              <h4 className="font-semibold text-gray-900 mb-2">Skill Transformation</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm text-gray-600 font-medium mb-1">Before</p>
+                  <p className="text-sm">{testimonial.beforeSkills}</p>
+                </div>
+                <div className="bg-indigo-50 p-3 rounded-lg">
+                  <p className="text-sm text-indigo-800 font-medium mb-1">After</p>
+                  <p className="text-sm">{testimonial.afterSkills}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </motion.div>
   );
 };
 
@@ -173,12 +183,16 @@ const TestimonialFeature = () => {
   return (
     <motion.div
       ref={ref}
-      className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 md:p-8 shadow-lg mb-12"
+      className="bg-gradient-to-br from-indigo-50 via-white to-purple-50 rounded-2xl p-6 md:p-8 shadow-xl mb-12 border border-gray-100 relative overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="flex flex-col md:flex-row gap-8 items-center">
+      {/* Decorative elements */}
+      <div className="absolute -left-10 top-10 w-40 h-40 bg-purple-100 rounded-full opacity-20 blur-2xl"></div>
+      <div className="absolute right-0 bottom-0 w-40 h-40 bg-indigo-100 rounded-full opacity-20 blur-2xl"></div>
+      
+      <div className="flex flex-col md:flex-row gap-8 items-center relative z-10">
         <div className="md:w-1/3 flex flex-col items-center">
           <div className="relative w-40 h-40 md:w-64 md:h-64 rounded-xl overflow-hidden border-4 border-white shadow-lg">
             <Image
@@ -190,7 +204,7 @@ const TestimonialFeature = () => {
           </div>
           <div className="text-center mt-4">
             <h3 className="text-2xl font-bold text-gray-900">{featuredTestimonial.name}</h3>
-            <p className="text-blue-600 font-medium">{featuredTestimonial.role}</p>
+            <p className="text-indigo-600 font-medium">{featuredTestimonial.role}</p>
             <p className="text-gray-700">{featuredTestimonial.company}</p>
             {featuredTestimonial.location && (
               <p className="text-gray-600 text-sm">{featuredTestimonial.location}</p>
@@ -200,8 +214,8 @@ const TestimonialFeature = () => {
                 <Star
                   key={i}
                   size={20}
-                  fill={i < featuredTestimonial.rating ? '#F59E0B' : 'none'}
-                  stroke={i < featuredTestimonial.rating ? '#F59E0B' : '#CBD5E0'}
+                  fill={i < featuredTestimonial.rating ? '#6366F1' : 'none'}
+                  stroke={i < featuredTestimonial.rating ? '#6366F1' : '#CBD5E0'}
                 />
               ))}
             </div>
@@ -209,7 +223,7 @@ const TestimonialFeature = () => {
         </div>
         <div className="md:w-2/3">
           <div className="text-xl md:text-2xl text-gray-700 italic relative pl-10 leading-relaxed">
-            <Quote size={32} className="absolute left-0 top-0 text-blue-400 opacity-60" />
+            <Quote size={32} className="absolute left-0 top-0 text-indigo-400 opacity-60" />
             "{featuredTestimonial.quote}"
           </div>
 
@@ -217,22 +231,22 @@ const TestimonialFeature = () => {
             <div className="mt-8 border-t border-gray-200 pt-6">
               <h4 className="font-semibold text-gray-900 mb-4 text-lg">Skill Transformation Journey</h4>
               <div className="flex flex-col md:flex-row gap-4 relative">
-                <div className="bg-gray-50 p-4 rounded-lg md:w-1/2">
+                <div className="bg-gray-50 p-4 rounded-lg md:w-1/2 border border-gray-100">
                   <p className="font-medium text-gray-700 mb-2">Before SKILL BRIDGE</p>
                   <p className="text-gray-600">{featuredTestimonial.beforeSkills}</p>
                 </div>
                 <div className="hidden md:block absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
-                  <div className="bg-white rounded-full p-2 shadow-md">
-                    <ArrowRight size={24} className="text-blue-600" />
+                  <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-full p-2 shadow-md">
+                    <ArrowRight size={24} className="text-white" />
                   </div>
                 </div>
                 <div className="md:hidden my-2 flex justify-center">
-                  <div className="bg-white rounded-full p-2 shadow-md transform rotate-90">
-                    <ArrowRight size={24} className="text-blue-600" />
+                  <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-full p-2 shadow-md transform rotate-90">
+                    <ArrowRight size={24} className="text-white" />
                   </div>
                 </div>
-                <div className="bg-blue-50 p-4 rounded-lg md:w-1/2">
-                  <p className="font-medium text-blue-800 mb-2">After SKILL BRIDGE</p>
+                <div className="bg-indigo-50 p-4 rounded-lg md:w-1/2 border border-indigo-100">
+                  <p className="font-medium text-indigo-800 mb-2">After SKILL BRIDGE</p>
                   <p className="text-gray-700">{featuredTestimonial.afterSkills}</p>
                 </div>
               </div>
@@ -247,7 +261,9 @@ const TestimonialFeature = () => {
             key={i}
             onClick={() => setFeaturedIndex(i)}
             className={`w-3 h-3 rounded-full transition-all ${
-              i === featuredIndex ? 'bg-blue-600 w-8' : 'bg-gray-300'
+              i === featuredIndex 
+                ? 'bg-gradient-to-r from-purple-500 to-indigo-600 w-8' 
+                : 'bg-gray-300 hover:bg-gray-400'
             }`}
             aria-label={`Go to testimonial ${i + 1}`}
           />
@@ -266,47 +282,73 @@ const Testimonials = () => {
   );
 
   return (
-    <section className="py-24 bg-white overflow-hidden">
-      <div className="container mx-auto px-4">
+    <section className="py-24 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-indigo-100 rounded-full opacity-50 filter blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-100 rounded-full opacity-50 filter blur-3xl"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Success Stories</h2>
-          <p className="text-xl text-gray-600">
+          <motion.h2 
+            className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5 }}
+          >
+            Success Stories
+          </motion.h2>
+          <motion.p 
+            className="text-xl text-gray-600"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
             Hear from our students and industry partners about the impact of our domain-based learning approach.
-          </p>
+          </motion.p>
         </div>
 
         <TestimonialFeature />
 
         <div className="flex justify-center mb-12">
-          <div className="inline-flex bg-gray-200 rounded-full p-1">
+          <div className="inline-flex bg-gray-100 rounded-full p-1.5 border border-gray-200">
             <button
               onClick={() => setActiveFilter('all')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeFilter === 'all' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-300'
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                activeFilter === 'all' 
+                  ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md' 
+                  : 'text-gray-700 hover:bg-gray-200'
               }`}
             >
               All Stories
             </button>
             <button
               onClick={() => setActiveFilter('student')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeFilter === 'student' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-300'
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                activeFilter === 'student' 
+                  ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md' 
+                  : 'text-gray-700 hover:bg-gray-200'
               }`}
             >
               Student Journeys
             </button>
             <button
               onClick={() => setActiveFilter('transformation')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeFilter === 'transformation' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-300'
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                activeFilter === 'transformation' 
+                  ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md' 
+                  : 'text-gray-700 hover:bg-gray-200'
               }`}
             >
               Skill Transformations
             </button>
             <button
               onClick={() => setActiveFilter('industry')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeFilter === 'industry' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-300'
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                activeFilter === 'industry' 
+                  ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md' 
+                  : 'text-gray-700 hover:bg-gray-200'
               }`}
             >
               Industry Validation
@@ -319,22 +361,27 @@ const Testimonials = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, staggerChildren: 0.1 }}
         >
           {filteredTestimonials.map((testimonial) => (
             <TestimonialCard key={testimonial.id} testimonial={testimonial} />
           ))}
         </motion.div>
 
-        <div className="text-center mt-16">
+        <motion.div 
+          className="text-center mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           <a 
             href="#apply" 
-            className="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center px-6 py-3 rounded-full shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-medium hover:shadow-xl transition-all transform hover:-translate-y-1"
           >
             Start Your Success Story
             <ArrowRight size={16} className="ml-2" />
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
