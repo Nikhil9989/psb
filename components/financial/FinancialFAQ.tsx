@@ -21,15 +21,15 @@ const faqCategories = [
       },
       {
         question: 'When do I start making payments?',
-        answer: 'You only begin making payments after you secure a job with a minimum salary threshold of ₹3 LPA (₹25,000/month). If your income falls below this threshold at any point, your payments are paused until you\\'re earning above the threshold again.'
+        answer: 'You only begin making payments after you secure a job with a minimum salary threshold of ₹3 LPA (₹25,000/month). If your income falls below this threshold at any point, your payments are paused until you are earning above the threshold again.'
       },
       {
-        question: 'Is there a cap on the total amount I\\'ll pay?',
-        answer: 'Yes, all our ISAs have a payment cap of 1.4x the program cost. This means you\\'ll never pay more than 140% of the original program fee, regardless of how much you earn. This protects you from overpayment if you secure a high-paying position.'
+        question: 'Is there a cap on the total amount I will pay?',
+        answer: 'Yes, all our ISAs have a payment cap of 1.4x the program cost. This means you will never pay more than a40% of the original program fee, regardless of how much you earn. This protects you from overpayment if you secure a high-paying position.'
       },
       {
-        question: 'What happens if I don\\'t find a job?',
-        answer: 'If you don\\'t find employment or if your income remains below our minimum threshold (₹3 LPA) after completing the program, you won\\'t make any payments. Our ISA term has a maximum length of 5 years, after which the obligation ends regardless of payment status.'
+        question: 'What happens if I do not find a job?',
+        answer: 'If you do not find employment or if your income remains below our minimum threshold (₹3 LPA) after completing the program, you will not make any payments. Our ISA term has a maximum length of 5 years, after which the obligation ends regardless of payment status.'
       },
       {
         question: 'Can I pay off my ISA early?',
@@ -48,18 +48,18 @@ const faqCategories = [
       },
       {
         question: 'How do I apply for a scholarship?',
-        answer: 'When you complete your program application, there\\'s a section to indicate your interest in financial assistance. You\\'ll be asked to provide relevant documentation for need-based scholarships, or to showcase your achievements for merit-based scholarships. All candidates are automatically considered for merit scholarships based on their application and assessment performance.'
+        answer: 'When you complete your program application, there is a section to indicate your interest in financial assistance. You will be asked to provide relevant documentation for need-based scholarships, or to showcase your achievements for merit-based scholarships. All candidates are automatically considered for merit scholarships based on their application and assessment performance.'
       },
       {
         question: 'Can scholarships be combined with ISAs or payment plans?',
-        answer: 'Yes, partial scholarships can be combined with ISAs or payment plans to cover the remaining balance. Full scholarships cover the entire program cost and don\\'t require additional financing.'
+        answer: 'Yes, partial scholarships can be combined with ISAs or payment plans to cover the remaining balance. Full scholarships cover the entire program cost and do not require additional financing.'
       },
       {
         question: 'What documentation is required for need-based scholarships?',
         answer: 'Required documentation typically includes proof of family income (such as income tax returns), verification of current employment status, and in some cases, a statement of financial need explaining your circumstances. Our admissions team will guide you through the specific requirements for your situation.'
       },
       {
-        question: 'When will I know if I\\'ve received a scholarship?',
+        question: 'When will I know if I have received a scholarship?',
         answer: 'Scholarship decisions are communicated along with your program acceptance decision, typically within 2-3 weeks of completing your application and assessment process. This gives you time to plan your finances before the program begins.'
       }
     ]
@@ -110,11 +110,11 @@ const faqCategories = [
       },
       {
         question: 'Do you offer any employment guarantees?',
-        answer: 'While we don\\'t offer a blanket job guarantee, we do offer an ISA which aligns our success with yours - we only get paid when you do. Additionally, select programs offer conditional placement assurances where students who meet specific criteria for participation and performance may qualify for extended support or partial refunds if placement goals aren\\'t met.'
+        answer: 'While we do not offer a blanket job guarantee, we do offer an ISA which aligns our success with yours - we only get paid when you do. Additionally, select programs offer conditional placement assurances where students who meet specific criteria for participation and performance may qualify for extended support or partial refunds if placement goals are not met.'
       },
       {
         question: 'Can I get a loan to cover program costs?',
-        answer: 'While we don\\'t directly offer loans, we have partnerships with select financial institutions that provide education loans for our programs, often at preferential rates. Our financial services team can provide information about these options upon request.'
+        answer: 'While we do not directly offer loans, we have partnerships with select financial institutions that provide education loans for our programs, often at preferential rates. Our financial services team can provide information about these options upon request.'
       }
     ]
   }
