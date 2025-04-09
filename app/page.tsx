@@ -5,6 +5,7 @@ import ProblemStatement from '@/components/home/ProblemStatement';
 import SolutionOverview from '@/components/home/SolutionOverview';
 import DomainApproach from '@/components/home/DomainApproach';
 import KeyFeatures from '@/components/home/KeyFeatures';
+import InstitutionalPartnerships from '@/components/home/InstitutionalPartnerships';
 import MissionVision from '@/components/home/MissionVision';
 import ContactUs from '@/components/home/ContactUs';
 import CallToAction from '@/components/home/CallToAction';
@@ -18,6 +19,7 @@ export default function HomePage() {
       <SolutionOverview />
       <DomainApproach />
       <KeyFeatures />
+      <InstitutionalPartnerships />
       <MissionVision />
       <ContactUs />
       <CallToAction />
