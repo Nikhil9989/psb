@@ -97,77 +97,76 @@ export default function NewApplicationPage() {
     }
   };
   
-  // If the form has been submitted successfully, show confirmation
-  if (isSubmitted) {
-    return (
-      <div className="max-w-3xl mx-auto">
-        <div className="border-b border-gold-500/10 pb-5 mb-8 flex items-center">
-          <Link 
-            href="/admin/applications" 
-            className="text-obsidian-300 hover:text-white mr-3"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Link>
-          <h1 className="text-2xl font-bold text-white">New Application</h1>
+  // Content for successful submission
+  const renderSuccess = () => (
+    <div className="max-w-3xl mx-auto">
+      <div className="border-b border-gold-500/10 pb-5 mb-8 flex items-center">
+        <Link 
+          href="/admin/applications" 
+          className="text-obsidian-300 hover:text-white mr-3"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Link>
+        <h1 className="text-2xl font-bold text-white">New Application</h1>
+      </div>
+      
+      <div className="bg-obsidian-800 rounded-xl shadow-gold-glow border border-gold-500/20 p-8">
+        <div className="flex justify-center mb-6">
+          <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
+            <CheckCircle className="h-8 w-8 text-green-500" />
+          </div>
         </div>
+        <h2 className="text-xl font-bold text-white text-center mb-4">Application Submitted Successfully</h2>
+        <p className="text-center text-obsidian-300 mb-6">
+          The application has been created and assigned ID: 
+          <span className="text-gold-500 font-mono ml-2">{applicationId}</span>
+        </p>
         
-        <div className="bg-obsidian-800 rounded-xl shadow-gold-glow border border-gold-500/20 p-8">
-          <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
-              <CheckCircle className="h-8 w-8 text-green-500" />
-            </div>
-          </div>
-          <h2 className="text-xl font-bold text-white text-center mb-4">Application Submitted Successfully</h2>
-          <p className="text-center text-obsidian-300 mb-6">
-            The application has been created and assigned ID: 
-            <span className="text-gold-500 font-mono ml-2">{applicationId}</span>
-          </p>
-          
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
-            <Link 
-              href={`/admin/applications/${applicationId}`} 
-              className="bg-gold-500 hover:bg-gold-600 text-obsidian-900 font-medium px-4 py-2 rounded-md text-center"
-            >
-              View Application
-            </Link>
-            <Link 
-              href="/admin/applications/new" 
-              className="bg-transparent border border-gold-500 text-gold-500 hover:bg-gold-500/10 font-medium px-4 py-2 rounded-md text-center"
-              onClick={() => {
-                setCurrentStep(1);
-                setIsSubmitted(false);
-                setFormData({
-                  personalInfo: {
-                    fullName: '',
-                    email: '',
-                    phone: '',
-                    city: '',
-                  },
-                  education: {
-                    level: '',
-                    institution: '',
-                    gradYear: '',
-                    field: '',
-                  },
-                  programInfo: {
-                    programInterest: '',
-                    heardFrom: '',
-                    whyJoin: '',
-                    currentEmployment: '',
-                    referralCode: '',
-                  }
-                });
-              }}
-            >
-              Create Another Application
-            </Link>
-          </div>
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+          <Link 
+            href={`/admin/applications/${applicationId}`} 
+            className="bg-gold-500 hover:bg-gold-600 text-obsidian-900 font-medium px-4 py-2 rounded-md text-center"
+          >
+            View Application
+          </Link>
+          <Link 
+            href="/admin/applications/new" 
+            className="bg-transparent border border-gold-500 text-gold-500 hover:bg-gold-500/10 font-medium px-4 py-2 rounded-md text-center"
+            onClick={() => {
+              setCurrentStep(1);
+              setIsSubmitted(false);
+              setFormData({
+                personalInfo: {
+                  fullName: '',
+                  email: '',
+                  phone: '',
+                  city: '',
+                },
+                education: {
+                  level: '',
+                  institution: '',
+                  gradYear: '',
+                  field: '',
+                },
+                programInfo: {
+                  programInterest: '',
+                  heardFrom: '',
+                  whyJoin: '',
+                  currentEmployment: '',
+                  referralCode: '',
+                }
+              });
+            }}
+          >
+            Create Another Application
+          </Link>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
   
-  return (
+  // Content for form steps
+  const renderForm = () => (
     <div className="max-w-3xl mx-auto">
       <div className="border-b border-gold-500/10 pb-5 mb-8 flex items-center">
         <Link 
@@ -474,7 +473,7 @@ export default function NewApplicationPage() {
                 Previous
               </button>
             ) : (
-              <div></div> {/* Empty div to maintain flex spacing */}
+              <div></div> // Empty div to maintain flex spacing
             )}
             
             {currentStep < totalSteps ? (
@@ -513,4 +512,6 @@ export default function NewApplicationPage() {
       </div>
     </div>
   );
+  
+  return isSubmitted ? renderSuccess() : renderForm();
 }
