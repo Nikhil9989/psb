@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import ClientApplicationDetailPage from './client-page.tsx';
+import ClientApplicationDetailPage from './client-page';
 
 // Mock application IDs for static generation
 const applicationIds = ['SB-271503', 'SB-271504', 'SB-271505']; 
