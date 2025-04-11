@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useElementOnScreen } from '../../src/hooks/useElementOnScreen';
-import { BriefcaseBusiness, TrendingUp, Users, BarChart4, GraduationCap, Building } from 'lucide-react';
+import { Briefcase, TrendingUp, Users, BarChart3, GraduationCap, Building } from 'lucide-react';
 
 const CareerOutcomes = () => {
   const [ref, isVisible] = useElementOnScreen({ threshold: 0.1 });
