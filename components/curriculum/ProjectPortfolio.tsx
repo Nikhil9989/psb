@@ -156,7 +156,7 @@ const ProjectPortfolio = () => {
                 variants={itemVariants}
                 className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100"
               >
-                <div className="relative h-48 w-full bg-blue-100">
+                <div className="relative h-48 w-full bg-gray-200 flex items-center justify-center">
                   <div className="absolute inset-0 bg-blue-800 bg-opacity-30 flex items-center justify-center">
                     <span className="text-white font-semibold text-lg">Project Preview</span>
                   </div>
@@ -166,40 +166,49 @@ const ProjectPortfolio = () => {
                   <h3 className="text-xl font-semibold text-gray-800 mb-3">{project.title}</h3>
                   <p className="text-gray-600 mb-4">{project.description}</p>
                   
-                  <div className="grid grid-cols-2 gap-4 mb-5">
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.skills.map((skill, i) => (
+                      <span key={i} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3 mb-4">
                     <div className="flex items-center text-gray-700">
-                      <Calendar className="w-5 h-5 text-blue-600 mr-2" />
-                      <span>{project.duration}</span>
+                      <Calendar className="w-4 h-4 mr-2 text-blue-600" />
+                      <span className="text-sm">{project.duration}</span>
                     </div>
                     <div className="flex items-center text-gray-700">
-                      <Users className="w-5 h-5 text-blue-600 mr-2" />
-                      <span>{project.teamSize}</span>
+                      <Users className="w-4 h-4 mr-2 text-blue-600" />
+                      <span className="text-sm">{project.teamSize}</span>
                     </div>
                   </div>
                   
-                  <div className="mb-5">
-                    <h4 className="font-medium text-gray-800 mb-2 flex items-center">
-                      <Code2 className="w-5 h-5 text-blue-600 mr-2" />
-                      Technologies Used
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {project.skills.map((skill, skillIndex) => (
-                        <span key={skillIndex} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <button className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800 transition-colors">
-                    View Project Details
-                    <ArrowRight className="w-4 h-4 ml-1" />
+                  <button className="flex items-center text-blue-600 font-medium hover:text-blue-800 transition-colors">
+                    View Project Details <ArrowRight className="w-4 h-4 ml-1" />
                   </button>
                 </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="bg-blue-50 border border-blue-100 rounded-lg p-6 text-center"
+        >
+          <h3 className="text-xl font-semibold text-blue-800 mb-3">Industry-Sponsored Capstone Projects</h3>
+          <p className="text-gray-700 mb-4">
+            In the final phase of your learning journey, work directly with industry partners on real business challenges. 
+            These capstone projects provide valuable experience and often lead to employment opportunities.
+          </p>
+          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+            Apply for Upcoming Capstone Projects
+          </button>
+        </motion.div>
       </div>
     </div>
   );
