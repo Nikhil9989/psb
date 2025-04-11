@@ -8,6 +8,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'About Us', href: '/about' },
+  { name: 'Curriculum', href: '/curriculum' },
   { name: 'Learning Paths', href: '/learning-paths' },
   { name: 'Domains', href: '/domains' },
   { name: 'Mentorship', href: '/mentorship' },
