@@ -19,6 +19,7 @@ const Footer = () => {
     {
       title: 'Learning',
       links: [
+        { name: 'Curriculum', href: '/curriculum' },
         { name: 'Learning Paths', href: '/learning-paths' },
         { name: 'Domains', href: '/domains' },
         { name: 'Cohort Structure', href: '/cohort' },
