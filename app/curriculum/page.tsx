@@ -5,11 +5,12 @@ import SkillProgressionRoadmap from '@/components/curriculum/SkillProgressionRoa
 import TechnologiesComponent from '@/components/curriculum/TechnologiesComponent';
 import ProjectPortfolio from '@/components/curriculum/ProjectPortfolio';
 import IndustryAlignment from '@/components/curriculum/IndustryAlignment';
+import CareerOutcomes from '@/components/curriculum/CareerOutcomes';
 import CallToAction from '@/components/home/CallToAction';
 
 export const metadata = {
   title: 'Detailed Curriculum | SKILL BRIDGE',
-  description: 'Explore our comprehensive domain-based curriculum with skill progression roadmap, technologies covered, and industry-aligned projects.'
+  description: 'Explore our comprehensive domain-based curriculum with skill progression roadmap, technologies covered, industry-aligned projects, and career outcomes.'
 };
 
 export default function CurriculumPage() {
@@ -20,6 +21,7 @@ export default function CurriculumPage() {
       <TechnologiesComponent />
       <ProjectPortfolio />
       <IndustryAlignment />
+      <CareerOutcomes />
       <CallToAction />
     </PageLayout>
   );
