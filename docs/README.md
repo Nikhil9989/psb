@@ -70,11 +70,23 @@ Due to the comprehensive nature of the document, it has been split into multiple
 10. [API Specifications (Part 10)](./SKILL_BRIDGE-SRS-part10.md)
     - Detailed API Specifications
 
-## Download Complete SRS Document
+## Updated and Additional Documentation
 
-For easier offline review, you can download the complete SRS document as a single PDF file:
+1. [Updated Project Scope](./SKILL_BRIDGE-SRS-part1-updated.md)
+   - Refined project scope with enhanced features and categorization
 
-[Download Complete SKILL BRIDGE SRS (PDF)]() - Coming Soon
+2. [Additional Features Specification](./SKILL_BRIDGE-SRS-additional-features.md)
+   - Detailed requirements for newly requested features:
+     - Cohort/Workshop Dashboards
+     - Technology Feed
+     - Student Showcase Wall
+     - Subdomain Project Hosting
+     - Collaborative Project Management
+     - Dynamic Resume Builder
+     - Problem Solving Dashboard (Daily Dose)
+     - Soft Skills Development
+     - Blog Publishing Platform
+     - Recommended Future Features
 
 ## Additional Resources
 
@@ -82,6 +94,6 @@ For easier offline review, you can download the complete SRS document as a singl
 
 ## Version Information
 
-**SRS Version:** 1.0  
+**SRS Version:** 1.1  
 **Date:** April 12, 2025  
 **Prepared by:** System Architecture Team
