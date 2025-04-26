@@ -1,30 +1,34 @@
 import React from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import TechFeedHero from '@/components/tech-feed/TechFeedHero';
-import TechFeedContent from '@/components/tech-feed/TechFeedContent';
-import TechFeedSidebar from '@/components/tech-feed/TechFeedSidebar';
-import TechFeedNewsletter from '@/components/tech-feed/TechFeedNewsletter';
+import TechFeedHighlights from '@/components/tech-feed/TechFeedHighlights';
+import TechTopics from '@/components/tech-feed/TechTopics';
+import TechSubscribe from '@/components/tech-feed/TechSubscribe';
+import Link from 'next/link';
 
 export const metadata = {
-  title: 'Technology Feed | SKILL BRIDGE',
-  description: 'Stay updated with the latest technological developments, industry trends, and expert insights tailored to your learning journey.',
+  title: 'Tech Feed | SKILL BRIDGE',
+  description: 'Stay updated with the latest technological advancements, industry trends, and curated content relevant to your learning journey.',
 }
 
 export default function TechFeedPage() {
   return (
     <PageLayout>
       <TechFeedHero />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="w-full lg:w-2/3">
-            <TechFeedContent />
-          </div>
-          <div className="w-full lg:w-1/3">
-            <TechFeedSidebar />
-          </div>
-        </div>
+      <div className="container mx-auto px-4 py-8 text-center">
+        <p className="text-lg text-gray-300 mb-6">
+          For personalized tech updates, bookmarked articles, and topic-specific content customization, access the dashboard.
+        </p>
+        <Link 
+          href="/dashboard/tech-feed"
+          className="inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition font-medium"
+        >
+          Go to Dashboard
+        </Link>
       </div>
-      <TechFeedNewsletter />
+      <TechTopics />
+      <TechFeedHighlights />
+      <TechSubscribe />
     </PageLayout>
   );
 }
