@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Minus, Trash2 } from 'lucide-react';
+import { Plus, Minus, Trash2, X } from 'lucide-react';
 import { ResumeData } from './ResumeBuilder';
 
 interface ResumeFormProps {
