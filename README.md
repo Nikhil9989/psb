@@ -52,7 +52,45 @@ The build output will be generated in the `out` directory.
 
 ## Deployment
 
-The website is automatically deployed to GitHub Pages via GitHub Actions whenever changes are pushed to the `master` branch.
+For automatic deployment to GitHub Pages, you can set up a GitHub Actions workflow:
+
+1. Create a `.github/workflows/deploy.yml` file
+2. Add the following workflow configuration:
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js ⚙️
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies 📦
+        run: npm ci
+
+      - name: Build 🔧
+        run: npm run build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: out
+          branch: gh-pages
+```
 
 ## Project Structure
 
