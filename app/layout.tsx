@@ -5,8 +5,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'SKILL BRIDGE',
-  description: 'Integrated Domain-Based Learning Platform',
+  title: 'SKILL BRIDGE - Domain-Based Learning Platform',
+  description: 'Bridge the skill gap with domain-based learning approach. Transform theoretical knowledge into practical expertise.',
 };
 
 export default function RootLayout({
@@ -16,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+      </body>
     </html>
   );
 }
