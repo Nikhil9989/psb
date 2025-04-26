@@ -203,7 +203,7 @@ const industryUpdates = [
   }
 ];
 
-const getCategoryColor = (category) => {
+const getCategoryColor = (category: string): string => {
   const categoryMap = {
     'Web Development': 'bg-blue-500',
     'Machine Learning': 'bg-green-500',
@@ -220,7 +220,7 @@ const getCategoryColor = (category) => {
   return categoryMap[category] || 'bg-gray-500';
 };
 
-const getCategoryTagStyle = (category) => {
+const getCategoryTagStyle = (category: string): string => {
   const styleMap = {
     'AI Research': 'bg-green-500/20 text-green-400',
     'Programming Languages': 'bg-blue-500/20 text-blue-400',
