@@ -85,7 +85,7 @@ function ResumeBuilder() {
   useEffect(() => {
     // This would connect to the portfolio service to fetch verified projects
     // For now, we'll simulate with placeholder data
-    const portfolioProjects = [
+    const portfolioProjects: ResumeData['projects'] = [
       // This would be populated from the user's actual portfolio
     ];
 
