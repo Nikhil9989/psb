@@ -1,261 +1,96 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FaChevronDown, FaMoneyBillWave, FaPercentage, FaQuestion, FaGraduationCap } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
-// FAQ categories and questions
-const faqCategories = [
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+const faqData: FAQItem[] = [
   {
-    id: 'isa',
-    icon: <FaMoneyBillWave className="h-5 w-5" />,
-    name: 'Income Sharing Agreements',
-    questions: [
-      {
-        question: 'What is an Income Sharing Agreement (ISA)?',
-        answer: 'An Income Sharing Agreement (ISA) is a financial arrangement where you pay for your education after you get a job. Instead of paying upfront, you agree to pay a percentage of your future income for a set period of time, but only after you start earning above a certain threshold.'
-      },
-      {
-        question: 'How much of my income will I need to share?',
-        answer: 'Our ISA terms typically range from 10-12% of your monthly income for 18-24 months, depending on your program. This percentage is fixed at the time of signing your agreement and will not change throughout the repayment period.'
-      },
-      {
-        question: 'When do I start making payments?',
-        answer: 'You only begin making payments after you secure a job with a minimum salary threshold of ₹3 LPA (₹25,000/month). If your income falls below this threshold at any point, your payments are paused until you are earning above the threshold again.'
-      },
-      {
-        question: 'Is there a cap on the total amount I will pay?',
-        answer: 'Yes, all our ISAs have a payment cap of 1.4x the program cost. This means you will never pay more than a40% of the original program fee, regardless of how much you earn. This protects you from overpayment if you secure a high-paying position.'
-      },
-      {
-        question: 'What happens if I do not find a job?',
-        answer: 'If you do not find employment or if your income remains below our minimum threshold (₹3 LPA) after completing the program, you will not make any payments. Our ISA term has a maximum length of 5 years, after which the obligation ends regardless of payment status.'
-      },
-      {
-        question: 'Can I pay off my ISA early?',
-        answer: 'Yes, you can pay off your ISA early at any time. We offer a 15% discount on the remaining balance for early repayment. This gives you flexibility if your financial situation changes or if you want to reduce your overall payment.'
-      }
-    ]
+    question: "What payment options does SKILL BRIDGE offer?",
+    answer: "SKILL BRIDGE offers multiple payment options including monthly subscriptions, quarterly payments, and Income Sharing Agreements (ISA). We also offer scholarships for high-potential candidates from underprivileged backgrounds."
   },
   {
-    id: 'scholarships',
-    icon: <FaGraduationCap className="h-5 w-5" />,
-    name: 'Scholarships & Financial Aid',
-    questions: [
-      {
-        question: 'What types of scholarships are available?',
-        answer: 'We offer both merit-based and need-based scholarships. Merit scholarships are awarded based on academic achievements, prior project work, or exceptional aptitude demonstrated during our assessment process. Need-based scholarships consider financial circumstances to ensure education remains accessible.'
-      },
-      {
-        question: 'How do I apply for a scholarship?',
-        answer: 'When you complete your program application, there is a section to indicate your interest in financial assistance. You will be asked to provide relevant documentation for need-based scholarships, or to showcase your achievements for merit-based scholarships. All candidates are automatically considered for merit scholarships based on their application and assessment performance.'
-      },
-      {
-        question: 'Can scholarships be combined with ISAs or payment plans?',
-        answer: 'Yes, partial scholarships can be combined with ISAs or payment plans to cover the remaining balance. Full scholarships cover the entire program cost and do not require additional financing.'
-      },
-      {
-        question: 'What documentation is required for need-based scholarships?',
-        answer: 'Required documentation typically includes proof of family income (such as income tax returns), verification of current employment status, and in some cases, a statement of financial need explaining your circumstances. Our admissions team will guide you through the specific requirements for your situation.'
-      },
-      {
-        question: 'When will I know if I have received a scholarship?',
-        answer: 'Scholarship decisions are communicated along with your program acceptance decision, typically within 2-3 weeks of completing your application and assessment process. This gives you time to plan your finances before the program begins.'
-      }
-    ]
+    question: "How does the Income Sharing Agreement (ISA) work?",
+    answer: "With our ISA, you only pay after securing employment with a salary above ₹3 LPA. You'll pay 10-12% of your salary for 18-24 months, with a payment cap of 1.4x the program price. There's a 3-month grace period after completion or until employment."
   },
   {
-    id: 'payment',
-    icon: <FaPercentage className="h-5 w-5" />,
-    name: 'Payment Plans & Options',
-    questions: [
-      {
-        question: 'What payment plans do you offer?',
-        answer: 'We offer several payment options: monthly or quarterly subscriptions, staggered payment plans (40% upfront, 30% after 45 days, 30% after 90 days), delayed payment options (begin payments 30 days after starting), and weekly payment options for greater flexibility. All plans give you access to the same high-quality education and support.'
-      },
-      {
-        question: 'Is there a discount for paying the full amount upfront?',
-        answer: 'Yes, we offer a 10% discount for students who choose to pay the full program fee upfront. This option provides the greatest savings for those who can afford the initial investment.'
-      },
-      {
-        question: 'What payment methods do you accept?',
-        answer: 'We accept all major credit and debit cards, UPI payments, net banking, and bank transfers. International students can pay using standard international payment methods like credit cards or wire transfers.'
-      },
-      {
-        question: 'Are there any hidden fees or additional costs?',
-        answer: 'No, our pricing is transparent with no hidden fees. The published program cost includes all learning materials, mentorship sessions, project assessments, and career services. The only potential additional costs would be for optional advanced certifications or specialized tools that some students may choose to pursue.'
-      },
-      {
-        question: 'What happens if I need to leave the program early?',
-        answer: 'Our refund policy allows for a full refund within the first 7 days of the program (satisfaction guarantee). After that, refunds are prorated based on the portion of the program completed, minus a small administrative fee. For students on payment plans, remaining payments may be adjusted or waived depending on the circumstances of withdrawal.'
-      }
-    ]
+    question: "Are there any scholarships available?",
+    answer: "Yes, we offer scholarships based on merit and financial need. We reserve a portion of seats in each cohort for scholarship recipients, with a focus on students from tier-2/3 cities and underrepresented groups in tech."
   },
   {
-    id: 'other',
-    icon: <FaQuestion className="h-5 w-5" />,
-    name: 'Other Financial Questions',
-    questions: [
-      {
-        question: 'Can I switch payment methods after enrolling?',
-        answer: 'Yes, you can switch between payment methods or plans by contacting our financial services team. Changes in payment structure may require a review and approval process, but we try to accommodate reasonable requests to ensure your financial comfort.'
-      },
-      {
-        question: 'Are there any tax benefits for education expenses?',
-        answer: 'In many cases, educational expenses can qualify for tax benefits under Section 80C or 80E of the Income Tax Act for Indian students. We provide documentation that may help you claim these benefits, but we recommend consulting with a tax professional for advice specific to your situation.'
-      },
-      {
-        question: 'What happens if I miss a payment?',
-        answer: 'We understand that financial difficulties can occur. If you anticipate payment issues, contact our financial services team proactively. For unexpected missed payments, we have a 10-day grace period before any late fees are assessed. We work with students experiencing financial hardship to find solutions that allow them to continue their education.'
-      },
-      {
-        question: 'Do you offer any employment guarantees?',
-        answer: 'While we do not offer a blanket job guarantee, we do offer an ISA which aligns our success with yours - we only get paid when you do. Additionally, select programs offer conditional placement assurances where students who meet specific criteria for participation and performance may qualify for extended support or partial refunds if placement goals are not met.'
-      },
-      {
-        question: 'Can I get a loan to cover program costs?',
-        answer: 'While we do not directly offer loans, we have partnerships with select financial institutions that provide education loans for our programs, often at preferential rates. Our financial services team can provide information about these options upon request.'
-      }
-    ]
+    question: "Can I switch payment plans after starting the program?",
+    answer: "Yes, you can switch between subscription and ISA plans within the first month of the program. After that, changes are evaluated on a case-by-case basis. Please contact our financial support team for assistance."
+  },
+  {
+    question: "What happens if I lose my job while on an ISA?",
+    answer: "If you lose your job while on an ISA, payments are paused until you find new employment above the ₹3 LPA threshold. The payment term extends accordingly, but there's no penalty for periods of unemployment."
+  },
+  {
+    question: "Are there any discounts for group enrollments?",
+    answer: "Yes, we offer discounts for group enrollments: 10% discount for groups of 3-5 students, 15% for 6-10 students, and 20% for groups of 10+ students. All members must enroll in the same cohort to qualify."
+  },
+  {
+    question: "What's the refund policy?",
+    answer: "We offer a full refund within the first 7 days of the program (satisfaction guarantee). After that, refunds are prorated based on the time remaining in the current payment period, minus a small administrative fee."
   }
 ];
 
-const FinancialFAQ = () => {
-  const [activeCategory, setActiveCategory] = useState('isa');
-  const [openQuestions, setOpenQuestions] = useState<Record<string, boolean>>({});
+const FinancialFAQ: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const toggleQuestion = (questionId: string) => {
-    setOpenQuestions((prev) => ({
-      ...prev,
-      [questionId]: !prev[questionId],
-    }));
+  const toggleFAQ = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <section className="py-20 md:py-24 bg-obsidian-900/95 texture-overlay relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-[url('/images/pattern.svg')] bg-repeat opacity-3 z-0"></div>
-      
-      {/* Gold accent elements */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/6 h-px bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
-      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/6 h-px bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
-      
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center max-w-3xl mx-auto mb-16"
-        >
-          <span className="text-gold-500 text-sm uppercase tracking-wider font-medium">Questions Answered</span>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mt-2 mb-6">
-            <span className="gold-gradient-text">Financial</span> FAQ
-          </h2>
-          <p className="text-obsidian-200 text-base md:text-lg">
-            Get answers to the most common questions about our pricing, payment options, ISA terms, and financial assistance programs.
-          </p>
-        </motion.div>
+    <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Financial FAQs</h2>
+      <p className="text-lg text-gray-600 text-center mb-10">
+        Common questions about our pricing, payment plans, and financial options.
+      </p>
 
-        {/* Category Tabs */}
-        <div className="mb-12">
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4">
-            {faqCategories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  activeCategory === category.id
-                    ? 'bg-gold-500 text-obsidian-900 shadow-gold'
-                    : 'bg-obsidian-800 text-obsidian-300 hover:text-white'
-                }`}
-              >
-                <span className="mr-2">{category.icon}</span>
-                {category.name}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* FAQ Accordion */}
-        <div className="max-w-4xl mx-auto">
-          {faqCategories
-            .filter((category) => category.id === activeCategory)
-            .map((category) => (
-              <div key={category.id} className="space-y-4">
-                {category.questions.map((faq, index) => {
-                  const questionId = `${category.id}-${index}`;
-                  const isOpen = openQuestions[questionId] || false;
-                  
-                  return (
-                    <motion.div
-                      key={questionId}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                      className="bg-obsidian-800 border border-obsidian-700 rounded-lg overflow-hidden"
-                    >
-                      <button
-                        onClick={() => toggleQuestion(questionId)}
-                        className="flex justify-between items-center w-full p-5 text-left focus:outline-none group"
-                      >
-                        <span className="text-white font-medium text-lg pr-4">{faq.question}</span>
-                        <FaChevronDown 
-                          className={`text-gold-500 transform transition-transform duration-300 ${
-                            isOpen ? 'rotate-180' : 'rotate-0'
-                          }`} 
-                        />
-                      </button>
-                      
-                      <div 
-                        className={`transition-all duration-300 overflow-hidden ${
-                          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                        }`}
-                      >
-                        <div className="p-5 pt-0 border-t border-obsidian-700 text-obsidian-300">
-                          {faq.answer}
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
+      <div className="space-y-4">
+        {faqData.map((faq, index) => (
+          <div 
+            key={index}
+            className="border border-gray-200 rounded-lg overflow-hidden"
+          >
+            <button
+              className="w-full flex justify-between items-center p-5 bg-white hover:bg-gray-50 transition-colors text-left"
+              onClick={() => toggleFAQ(index)}
+              aria-expanded={openIndex === index}
+            >
+              <span className="font-medium text-gray-900">{faq.question}</span>
+              <span className="ml-4 flex-shrink-0 text-indigo-600">
+                {openIndex === index ? <FaChevronUp /> : <FaChevronDown />}
+              </span>
+            </button>
+            
+            {openIndex === index && (
+              <div className="p-5 border-t border-gray-200 bg-gray-50">
+                <p className="text-gray-600">{faq.answer}</p>
               </div>
-            ))}
-        </div>
-        
-        {/* Still Have Questions */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="mt-16 text-center"
-        >
-          <div className="bg-obsidian-800/50 border border-obsidian-700/70 rounded-lg p-8 max-w-3xl mx-auto">
-            <h3 className="text-xl font-bold text-white mb-4">Still Have Questions?</h3>
-            <p className="text-obsidian-300 mb-6">
-              Our financial advisors are ready to help you understand your options and find the best payment solution for your situation.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/contact?topic=financial"
-                className="btn btn-gold px-6 py-3 text-sm inline-flex items-center justify-center shadow-gold relative overflow-hidden group"
-              >
-                <span className="relative z-10">Contact Financial Advisor</span>
-                {/* Gold shimmer effect */}
-                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-gold-500/0 via-gold-500/30 to-gold-500/0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </a>
-              <a
-                href="/apply"
-                className="btn bg-obsidian-700 hover:bg-obsidian-600 text-white px-6 py-3 text-sm inline-flex items-center justify-center transition-all duration-300"
-              >
-                <span>Apply Now</span>
-              </a>
-            </div>
+            )}
           </div>
-        </motion.div>
+        ))}
       </div>
-    </section>
+
+      <div className="mt-10 text-center">
+        <p className="text-gray-600 mb-4">
+          Have more questions about our financial options?
+        </p>
+        <a 
+          href="/contact"
+          className="inline-flex items-center text-indigo-600 font-medium hover:text-indigo-800"
+        >
+          Contact our financial aid team
+        </a>
+      </div>
+    </div>
   );
 };
 
