@@ -73,7 +73,7 @@ const initialResumeData: ResumeData = {
   certifications: [],
 };
 
-const ResumeBuilder: React.FC = () => {
+function ResumeBuilder() {
   const [activeStep, setActiveStep] = useState<number>(0);
   const [resumeData, setResumeData] = useState<ResumeData>(initialResumeData);
   const [selectedTemplate, setSelectedTemplate] = useState<string>('modern');
@@ -335,6 +335,6 @@ const ResumeBuilder: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default ResumeBuilder;
