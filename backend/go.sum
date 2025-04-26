@@ -1,2 +1,2 @@
 # This file intentionally left empty to be regenerated during the build process
-# The checksum mismatch errors will be resolved when Go downloads dependencies and generates a new go.sum
+# This forces a clean download of all dependencies with fresh checksums during docker build
