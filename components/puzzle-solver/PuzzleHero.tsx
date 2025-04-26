@@ -1,5 +1,5 @@
 import React from 'react';
-import { PuzzlePiece, BrainCircuit, Code, Star } from 'lucide-react';
+import { Puzzle, BrainCircuit, Code, Star } from 'lucide-react';
 
 const PuzzleHero = () => {
   return (
@@ -7,7 +7,7 @@ const PuzzleHero = () => {
       <div className="container mx-auto px-4 text-center">
         <div className="flex items-center justify-center mb-6">
           <div className="bg-purple-600/30 p-4 rounded-full">
-            <PuzzlePiece className="h-12 w-12 text-purple-400" />
+            <Puzzle className="h-12 w-12 text-purple-400" /> {/* Changed from PuzzlePiece to Puzzle */}
           </div>
         </div>
         <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">

@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Layout, Book, PuzzlePiece, Award, FileText, Users, Zap, BarChart2, BookOpen } from 'lucide-react';
+import { Layout, Book, Award, FileText, Users, Zap, BarChart2, BookOpen, Puzzle } from 'lucide-react';
 
 const navItems = [
   {
@@ -19,7 +19,7 @@ const navItems = [
   {
     label: 'Puzzle Solver',
     href: '/dashboard/puzzle-solver',
-    icon: PuzzlePiece
+    icon: Puzzle // Changed from PuzzlePiece to Puzzle
   },
   {
     label: 'Showcase',
