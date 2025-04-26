@@ -8,7 +8,7 @@ import {
   MessageSquare, 
   Award, 
   Settings,
-  PuzzlePiece,
+  Puzzle, // Changed from PuzzlePiece
   Image,
   Rss
 } from 'lucide-react';
@@ -62,7 +62,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             Features
           </div>
           <Link href="/dashboard/puzzle-solver" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition">
-            <PuzzlePiece className="h-5 w-5 mr-3" />
+            <Puzzle className="h-5 w-5 mr-3" /> {/* Changed from PuzzlePiece to Puzzle */}
             <span>Puzzle Solver</span>
           </Link>
           <Link href="/dashboard/showcase" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition">
