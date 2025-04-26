@@ -3,18 +3,24 @@ FROM golang:1.20-alpine AS builder
 WORKDIR /app
 
 # Copy the Go Modules manifests
-COPY go.mod go.mod
-COPY go.sum go.sum
+COPY backend/go.mod backend/go.mod
+COPY backend/go.sum backend/go.sum
+
+# Set Working Directory for Go Modules
+WORKDIR /app/backend
 
 # Download dependencies
 RUN go mod download
 
+# Go back to root directory
+WORKDIR /app
+
 # Copy the source code
-COPY pkg/ /app/pkg/
-COPY services/api-gateway/ /app/services/api-gateway/
+COPY backend/pkg/ /app/backend/pkg/
+COPY backend/services/api-gateway/ /app/backend/services/api-gateway/
 
 # Build the binary
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o api-gateway /app/services/api-gateway/
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o api-gateway /app/backend/services/api-gateway/
 
 # Use a smaller image for the final container
 FROM alpine:latest
