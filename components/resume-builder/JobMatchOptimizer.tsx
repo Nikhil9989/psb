@@ -40,7 +40,7 @@ const JobMatchOptimizer: React.FC<JobMatchOptimizerProps> = ({
     {
       category: 'Formatting',
       items: [
-        'Ensure your most relevant qualifications appear \"above the fold\"',
+        'Ensure your most relevant qualifications appear "above the fold"',
         'Use the job title exactly as it appears in the listing',
         'Incorporate keywords from the job description naturally',
       ],
@@ -70,7 +70,7 @@ const JobMatchOptimizer: React.FC<JobMatchOptimizerProps> = ({
       <p className="text-slate-300 mb-6">
         Paste a job description below to receive AI-assisted suggestions for tailoring your resume
         to this specific position. This increases your chances of passing applicant tracking systems
-        and catching the recruiter's attention.
+        and catching the recruiter&apos;s attention.
       </p>
 
       <div className="mb-6">
