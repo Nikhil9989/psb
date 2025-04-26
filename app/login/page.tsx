@@ -5,10 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Eye, EyeOff, ArrowRight, LogIn } from 'lucide-react';
 
-export const metadata = {
-  title: 'Log In | SKILL BRIDGE',
-  description: 'Log in to your SKILL BRIDGE account to access your personalized learning dashboard and continue your learning journey.',
-}
+// Note: Removed metadata export since we can't use it with 'use client'
+// Metadata should be in a separate metadata.ts file or layout.tsx file
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
