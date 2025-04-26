@@ -1,6 +1,6 @@
 import PageLayout from '@/components/layout/PageLayout';
 import Link from 'next/link';
-import { ArrowRight, BookOpen, Users, Puzzle, Rss, Image } from 'lucide-react';
+import { ArrowRight, BookOpen, Users, Layers, Rss, Image } from 'lucide-react';
 
 export const metadata = {
   title: 'SKILL BRIDGE - Integrated Domain-Based Learning Platform',
@@ -68,7 +68,7 @@ export default function Home() {
             {/* Feature 1 */}
             <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:shadow-md transition duration-300">
               <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 mb-4">
-                <Puzzle size={24} />
+                <Layers size={24} />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Domain-Based Learning</h3>
               <p className="text-gray-600">
