@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import MobileMenu from './MobileMenu';
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -30,7 +31,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
                 About Us
               </Link>
             </nav>
-            <div className="flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-4">
               <Link href="/login" className="text-gray-300 hover:text-white transition">
                 Login
               </Link>
@@ -41,6 +42,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
                 Register
               </Link>
             </div>
+            <MobileMenu />
           </div>
         </div>
       </header>
