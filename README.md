@@ -1,6 +1,8 @@
-# SKILL BRIDGE
+# SKILL BRIDGE (STABLE VERSION)
 
 SKILL BRIDGE is an innovative domain-based learning platform designed to bridge the gap between theoretical education and practical industry skills. The platform focuses on providing a comprehensive learning experience through integrated domain learning, particularly targeting students in tier-2 and tier-3 cities in India.
+
+> **Note**: This is the stable version of the repository, pointing to commit 3a4af0bab27e69c27462d78ea524a55f055e3c29, before homepage and design theme changes.
 
 ## Key Features
 
@@ -71,7 +73,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ master ]
+    branches: [ stable-version ]
   workflow_dispatch:
 
 jobs:
