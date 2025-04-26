@@ -204,7 +204,7 @@ const industryUpdates = [
 ];
 
 const getCategoryColor = (category: string): string => {
-  const categoryMap = {
+  const categoryMap: Record<string, string> = {
     'Web Development': 'bg-blue-500',
     'Machine Learning': 'bg-green-500',
     'DevOps': 'bg-purple-500',
@@ -221,7 +221,7 @@ const getCategoryColor = (category: string): string => {
 };
 
 const getCategoryTagStyle = (category: string): string => {
-  const styleMap = {
+  const styleMap: Record<string, string> = {
     'AI Research': 'bg-green-500/20 text-green-400',
     'Programming Languages': 'bg-blue-500/20 text-blue-400',
     'Cloud Computing': 'bg-pink-500/20 text-pink-400',
