@@ -15,10 +15,8 @@ const nextConfig = {
   // Set base path
   basePath: '/psb',
   trailingSlash: false,
-  // Put other experimental features here if needed
-  experimental: {
-    // No 'images' object here
-  }
+  // Empty experimental object
+  experimental: {}
 };
 
 module.exports = nextConfig;
