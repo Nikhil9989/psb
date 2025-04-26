@@ -1,271 +1,279 @@
-'use client';
+import React from 'react';
+import { Eye, Heart, MessageSquare, Award, Star, ExternalLink } from 'lucide-react';
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { Heart, MessageCircle, Eye, Github, ExternalLink, Bookmark, Share2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+interface ShowcaseGalleryProps {
+  featured?: boolean;
+  limit?: number;
+}
 
-// Sample projects data
-const projectsData = [
-  {
-    id: 'p1',
-    title: 'FinTrack Dashboard',
-    description: 'Personal finance tracking dashboard with expense categorization and visualization.',
-    student: 'Vikram Singh',
-    studentImage: '/students/vikram.jpg',
-    domain: 'Web Development',
-    phase: '60%',
-    image: '/projects/fintrack.jpg',
-    likes: 156,
-    comments: 23,
-    views: 890,
-    technologies: ['React', 'Node.js', 'Chart.js', 'MongoDB'],
-    featured: false,
-    live: 'https://fintrack.demo.skillbridge.in',
-    github: 'https://github.com/vikram-singh/fintrack',
-  },
-  {
-    id: 'p2',
-    title: 'MindfulMe',
-    description: 'Meditation and mental wellness application with guided sessions and progress tracking.',
-    student: 'Ananya Desai',
-    studentImage: '/students/ananya.jpg',
-    domain: 'Mobile Development',
-    phase: '70%',
-    image: '/projects/mindfulme.jpg',
-    likes: 203,
-    comments: 45,
-    views: 1250,
-    technologies: ['React Native', 'Firebase', 'Redux', 'Node.js'],
-    featured: true,
-    live: 'https://mindfulme.demo.skillbridge.in',
-    github: 'https://github.com/ananya-desai/mindfulme',
-  },
-  {
-    id: 'p3',
-    title: 'WeatherSense',
-    description: 'Weather prediction system using machine learning and historical climate data.',
-    student: 'Rahul Mehta',
-    studentImage: '/students/rahul.jpg',
-    domain: 'Data Science',
-    phase: '80%',
-    image: '/projects/weathersense.jpg',
-    likes: 178,
-    comments: 32,
-    views: 945,
-    technologies: ['Python', 'TensorFlow', 'Pandas', 'Flask'],
-    featured: false,
-    live: 'https://weathersense.demo.skillbridge.in',
-    github: 'https://github.com/rahul-mehta/weathersense',
-  },
-  {
-    id: 'p4',
-    title: 'NutriScan',
-    description: 'Mobile app that scans food items and provides nutritional information and dietary recommendations.',
-    student: 'Prisha Kapoor',
-    studentImage: '/students/prisha.jpg',
-    domain: 'Mobile Development',
-    phase: '60%',
-    image: '/projects/nutriscan.jpg',
-    likes: 145,
-    comments: 29,
-    views: 870,
-    technologies: ['Flutter', 'Firebase', 'TensorFlow Lite', 'Python'],
-    featured: false,
-    live: 'https://nutriscan.demo.skillbridge.in',
-    github: 'https://github.com/prisha-kapoor/nutriscan',
-  },
-  {
-    id: 'p5',
-    title: 'CodeCollab',
-    description: 'Real-time collaborative coding platform with video chat and shared editor.',
-    student: 'Arjun Nair',
-    studentImage: '/students/arjun.jpg',
-    domain: 'Web Development',
-    phase: '70%',
-    image: '/projects/codecollab.jpg',
-    likes: 210,
-    comments: 38,
-    views: 1120,
-    technologies: ['React', 'Socket.io', 'WebRTC', 'MongoDB'],
-    featured: true,
-    live: 'https://codecollab.demo.skillbridge.in',
-    github: 'https://github.com/arjun-nair/codecollab',
-  },
-  {
-    id: 'p6',
-    title: 'SmartInventory',
-    description: 'IoT-based inventory management system for small businesses with analytics.',
-    student: 'Kavita Reddy',
-    studentImage: '/students/kavita.jpg',
-    domain: 'IoT',
-    phase: '50%',
-    image: '/projects/smartinventory.jpg',
-    likes: 132,
-    comments: 25,
-    views: 760,
-    technologies: ['Arduino', 'React', 'Node.js', 'MQTT'],
-    featured: false,
-    live: 'https://smartinventory.demo.skillbridge.in',
-    github: 'https://github.com/kavita-reddy/smartinventory',
-  },
-  // Add more projects as needed
-];
-
-const ShowcaseGallery = () => {
-  const [visibleProjects, setVisibleProjects] = useState(6);
-
-  const loadMoreProjects = () => {
-    setVisibleProjects(prev => prev + 6);
-  };
+const ShowcaseGallery: React.FC<ShowcaseGalleryProps> = ({ featured = false, limit = 6 }) => {
+  // Filter projects based on featured flag and limit
+  const displayProjects = featured 
+    ? projects.filter(project => project.featured).slice(0, limit)
+    : projects.slice(0, limit);
 
   return (
-    <section className="py-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="sr-only">Student Projects Gallery</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projectsData.slice(0, visibleProjects).map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="bg-obsidian-800 rounded-xl overflow-hidden shadow-lg hover:shadow-amber-900/10 border border-gray-800 hover:border-amber-700/30 transition-all group"
-            >
-              {/* Project image container */}
-              <div className="relative h-56 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-obsidian-900/80 z-10" />
-                <div className="absolute inset-0 bg-obsidian-900 animate-pulse" /> {/* Placeholder */}
-                <Image
-                  src={project.image}
+    <div className="bg-gray-900 py-16">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-2xl font-bold text-white">{featured ? 'Featured Projects' : 'Latest Projects'}</h2>
+          <div className="flex gap-2">
+            <button className="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-md transition border border-gray-700">
+              All Categories
+            </button>
+            <button className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md transition">
+              View All
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {displayProjects.map((project) => (
+            <div key={project.id} className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-indigo-500/30 transition shadow-lg hover:shadow-indigo-500/10">
+              <div className="relative h-48 bg-gray-900">
+                <img 
+                  src={project.image} 
                   alt={project.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  onError={(e) => {
-                    // Fallback for demo purposes
-                    const target = e.target as HTMLImageElement;
-                    target.src = 'https://via.placeholder.com/400x300.png?text=Project+Image';
-                  }}
+                  className="w-full h-full object-cover"
                 />
-                
-                {/* Featured badge if applicable */}
                 {project.featured && (
-                  <div className="absolute top-3 left-3 z-20 bg-amber-600 text-white text-xs px-2 py-1 rounded-lg">
+                  <div className="absolute top-2 left-2 bg-yellow-500/20 px-2 py-1 rounded text-xs text-yellow-500 flex items-center">
+                    <Star className="h-3 w-3 mr-1" fill="currentColor" />
                     Featured
                   </div>
                 )}
-                
-                {/* Skill level badge */}
-                <div className="absolute top-3 right-3 z-20 bg-obsidian-800/90 text-amber-400 text-xs px-2 py-1 rounded-lg border border-amber-700/30">
-                  {project.phase} Mastery
-                </div>
-                
-                {/* Student info at the bottom of image */}
-                <div className="absolute bottom-3 left-3 right-3 z-20 flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-amber-700 flex items-center justify-center text-white font-semibold text-sm">
-                    {project.student.charAt(0)}
-                  </div>
-                  <div className="ml-2">
-                    <p className="text-white text-sm font-medium">{project.student}</p>
-                    <p className="text-gray-300 text-xs">{project.domain}</p>
-                  </div>
-                </div>
-                
-                {/* Quick action buttons */}
-                <div className="absolute top-3 right-16 z-20 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button className="p-1.5 bg-obsidian-800/90 rounded-full text-gray-300 hover:text-rose-400 transition-colors" aria-label="Like project">
-                    <Heart size={16} />
-                  </button>
-                  <button className="p-1.5 bg-obsidian-800/90 rounded-full text-gray-300 hover:text-amber-400 transition-colors" aria-label="Save project">
-                    <Bookmark size={16} />
-                  </button>
-                  <button className="p-1.5 bg-obsidian-800/90 rounded-full text-gray-300 hover:text-blue-400 transition-colors" aria-label="Share project">
-                    <Share2 size={16} />
-                  </button>
+                <div className="absolute top-2 right-2 bg-gray-900/70 px-2 py-1 rounded text-xs text-white">
+                  {project.category}
                 </div>
               </div>
               
-              {/* Project content */}
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-white group-hover:text-amber-400 transition-colors mb-2">
-                  {project.title}
-                </h3>
+                <div className="flex items-start gap-4 mb-4">
+                  <img 
+                    src={project.authorAvatar} 
+                    alt={project.author}
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">{project.title}</h3>
+                    <p className="text-gray-400 text-sm">by {project.author}</p>
+                  </div>
+                </div>
                 
-                <p className="text-gray-400 text-sm line-clamp-2 mb-4">
-                  {project.description}
-                </p>
+                <p className="text-gray-300 mb-4 line-clamp-3">{project.description}</p>
                 
-                {/* Technology tags */}
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {project.technologies.map(tech => (
-                    <span 
-                      key={tech} 
-                      className="text-xs bg-obsidian-900 text-gray-300 px-2 py-1 rounded-md border border-gray-800"
-                    >
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.technologies.map((tech, index) => (
+                    <span key={index} className="bg-gray-700 text-gray-300 px-2 py-1 rounded-md text-xs">
                       {tech}
                     </span>
                   ))}
                 </div>
                 
-                {/* Footer with stats and links */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-800">
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center text-rose-400">
-                      <Heart size={14} className="mr-1" />
-                      <span className="text-xs text-gray-400">{project.likes}</span>
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-3">
+                    <div className="flex items-center text-gray-400">
+                      <Eye className="h-4 w-4 mr-1" />
+                      <span className="text-sm">{project.views}</span>
                     </div>
-                    <div className="flex items-center text-blue-400">
-                      <MessageCircle size={14} className="mr-1" />
-                      <span className="text-xs text-gray-400">{project.comments}</span>
+                    <div className="flex items-center text-gray-400">
+                      <Heart className="h-4 w-4 mr-1" />
+                      <span className="text-sm">{project.likes}</span>
                     </div>
-                    <div className="flex items-center text-green-400">
-                      <Eye size={14} className="mr-1" />
-                      <span className="text-xs text-gray-400">{project.views}</span>
+                    <div className="flex items-center text-gray-400">
+                      <MessageSquare className="h-4 w-4 mr-1" />
+                      <span className="text-sm">{project.comments}</span>
                     </div>
                   </div>
-                  
-                  {/* External links */}
-                  <div className="flex gap-2">
-                    <a 
-                      href={project.live} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="p-1.5 text-gray-400 hover:text-amber-400 transition-colors"
-                      aria-label="View live project"
-                    >
-                      <ExternalLink size={14} />
-                    </a>
-                    <a 
-                      href={project.github} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="p-1.5 text-gray-400 hover:text-amber-400 transition-colors"
-                      aria-label="View GitHub repository"
-                    >
-                      <Github size={14} />
-                    </a>
-                  </div>
+                  <a href="#" className="flex items-center text-indigo-400 hover:text-indigo-300 text-sm">
+                    View 
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </a>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
-        
-        {/* Load more button */}
-        {visibleProjects < projectsData.length && (
-          <div className="flex justify-center mt-12">
-            <button 
-              onClick={loadMoreProjects}
-              className="px-8 py-3 bg-obsidian-800 text-white font-semibold rounded-lg border border-gray-700 hover:bg-obsidian-700 hover:border-amber-700/30 transition-all shadow-sm"
-            >
-              Load More Projects
-            </button>
+
+        {/* Testimonials */}
+        {featured && (
+          <div className="mt-16">
+            <h2 className="text-2xl font-bold text-white mb-8">What Industry Leaders Say</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {testimonials.map((testimonial, index) => (
+                <div key={index} className="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                  <div className="flex items-center mb-4">
+                    <div className="bg-indigo-500/20 p-2 rounded-full mr-4">
+                      <Award className="h-6 w-6 text-indigo-400" />
+                    </div>
+                    <div>
+                      <div className="text-lg font-semibold text-white">{testimonial.name}</div>
+                      <div className="text-gray-400 text-sm">{testimonial.title}</div>
+                    </div>
+                  </div>
+                  <p className="text-gray-300 mb-6">"{testimonial.quote}"</p>
+                  <div className="flex items-center">
+                    <img 
+                      src={testimonial.companyLogo} 
+                      alt={testimonial.company}
+                      className="h-8 w-auto mr-2"
+                    />
+                    <span className="text-gray-400 text-sm">{testimonial.company}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 };
+
+const projects = [
+  {
+    id: 1,
+    title: "E-Commerce Dashboard",
+    description: "A complete admin dashboard for e-commerce platforms with inventory management, order tracking, and customer analytics built with React, Node.js, and MongoDB.",
+    image: "/api/placeholder/500/300",
+    category: "Full Stack",
+    author: "Ananya Singh",
+    authorAvatar: "/api/placeholder/50/50",
+    technologies: ["React", "Node.js", "MongoDB", "Express", "Chart.js"],
+    views: 845,
+    likes: 76,
+    comments: 12,
+    featured: true
+  },
+  {
+    id: 2,
+    title: "AI-Powered Content Generator",
+    description: "A machine learning application that generates blog posts, product descriptions, and social media content using OpenAI's GPT models with a user-friendly interface.",
+    image: "/api/placeholder/500/300",
+    category: "AI/ML",
+    author: "Rohan Kumar",
+    authorAvatar: "/api/placeholder/50/50",
+    technologies: ["Python", "React", "FastAPI", "TensorFlow", "OpenAI"],
+    views: 1203,
+    likes: 98,
+    comments: 23,
+    featured: true
+  },
+  {
+    id: 3,
+    title: "Real-time Chat Application",
+    description: "A modern chat platform with real-time messaging, file sharing, and user presence indicators, built with Socket.io and React.",
+    image: "/api/placeholder/500/300",
+    category: "Web Development",
+    author: "Divya Patel",
+    authorAvatar: "/api/placeholder/50/50",
+    technologies: ["React", "Socket.io", "Node.js", "MongoDB", "Firebase"],
+    views: 756,
+    likes: 64,
+    comments: 18,
+    featured: false
+  },
+  {
+    id: 4,
+    title: "Cryptocurrency Tracker",
+    description: "A real-time dashboard for tracking cryptocurrency prices, market capitalization, and trading volume with interactive charts and alerts.",
+    image: "/api/placeholder/500/300",
+    category: "FinTech",
+    author: "Vikram Sharma",
+    authorAvatar: "/api/placeholder/50/50",
+    technologies: ["React", "Redux", "CoinGecko API", "D3.js", "TailwindCSS"],
+    views: 932,
+    likes: 81,
+    comments: 14,
+    featured: true
+  },
+  {
+    id: 5,
+    title: "Task Management System",
+    description: "A collaborative project management tool with task assignments, progress tracking, and team collaboration features.",
+    image: "/api/placeholder/500/300",
+    category: "Productivity",
+    author: "Neha Gupta",
+    authorAvatar: "/api/placeholder/50/50",
+    technologies: ["Vue.js", "Express", "PostgreSQL", "GraphQL"],
+    views: 689,
+    likes: 53,
+    comments: 9,
+    featured: false
+  },
+  {
+    id: 6,
+    title: "Social Media Dashboard",
+    description: "An integrated dashboard for managing multiple social media accounts with analytics, scheduled posting, and engagement tracking.",
+    image: "/api/placeholder/500/300",
+    category: "Marketing",
+    author: "Arjun Mehta",
+    authorAvatar: "/api/placeholder/50/50",
+    technologies: ["React", "Node.js", "Social Media APIs", "Chart.js"],
+    views: 542,
+    likes: 47,
+    comments: 11,
+    featured: false
+  },
+  {
+    id: 7,
+    title: "Healthcare Appointment System",
+    description: "A comprehensive platform for managing patient appointments, medical records, and doctor schedules with telemedicine capabilities.",
+    image: "/api/placeholder/500/300",
+    category: "Healthcare",
+    author: "Priya Malhotra",
+    authorAvatar: "/api/placeholder/50/50",
+    technologies: ["Angular", ".NET Core", "SQL Server", "Azure"],
+    views: 621,
+    likes: 58,
+    comments: 16,
+    featured: true
+  },
+  {
+    id: 8,
+    title: "Weather Forecast Application",
+    description: "A beautiful weather app with location detection, 7-day forecasts, and severe weather alerts using multiple weather APIs.",
+    image: "/api/placeholder/500/300",
+    category: "Mobile App",
+    author: "Karan Singh",
+    authorAvatar: "/api/placeholder/50/50",
+    technologies: ["React Native", "Weather API", "Geolocation", "Redux"],
+    views: 475,
+    likes: 42,
+    comments: 7,
+    featured: false
+  },
+  {
+    id: 9,
+    title: "Personal Finance Tracker",
+    description: "A budget management application that helps users track expenses, set savings goals, and visualize spending patterns.",
+    image: "/api/placeholder/500/300",
+    category: "FinTech",
+    author: "Sanjay Verma",
+    authorAvatar: "/api/placeholder/50/50",
+    technologies: ["React", "Firebase", "D3.js", "Plaid API"],
+    views: 563,
+    likes: 49,
+    comments: 13,
+    featured: false
+  }
+];
+
+const testimonials = [
+  {
+    name: "Vishal Gupta",
+    title: "CTO",
+    company: "TechInnovate Solutions",
+    companyLogo: "/api/placeholder/100/50",
+    quote: "The quality of projects coming from SKILL BRIDGE students is exceptional. We've hired three graduates directly from the showcase and they've become valuable team members."
+  },
+  {
+    name: "Anita Desai",
+    title: "VP of Engineering",
+    company: "GlobalSoft India",
+    companyLogo: "/api/placeholder/100/50",
+    quote: "What sets SKILL BRIDGE projects apart is the focus on real-world applications. These students aren't just learning theory - they're building practical solutions to actual problems."
+  }
+];
 
 export default ShowcaseGallery;
