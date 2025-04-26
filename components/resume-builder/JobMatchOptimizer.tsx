@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, AlertCircle, BarChart3, CheckCircle, ArrowRight } from 'lucide-react';
@@ -38,7 +40,7 @@ const JobMatchOptimizer: React.FC<JobMatchOptimizerProps> = ({
     {
       category: 'Formatting',
       items: [
-        'Ensure your most relevant qualifications appear "above the fold"',
+        'Ensure your most relevant qualifications appear \"above the fold\"',
         'Use the job title exactly as it appears in the listing',
         'Incorporate keywords from the job description naturally',
       ],
