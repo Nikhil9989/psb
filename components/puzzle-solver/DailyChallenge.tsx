@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Play, Check, Rotate, Download, Info, ChevronDown, ChevronUp, Terminal, Copy, Clock, Award } from 'lucide-react';
+import { Play, Check, Download, Info, ChevronDown, ChevronUp, Terminal, Copy, Clock, Award, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 // Sample daily challenge data
@@ -20,7 +20,7 @@ const dailyChallenge = {
     { input: '{[}]', output: 'false', explanation: 'Brackets not properly closed in correct order.' },
   ],
   constraints: [
-    'The input string will only contain the characters \"(\", \")\", \"[\", \"]\", \"{\", and \"}\".',
+    'The input string will only contain the characters \\"(\\", \\")", \\"[\\", \\"]\\", \\"{\\", and \\"}\\".',
     'The length of the input string will be between 0 and 10,000.',
     'An empty string is considered balanced.',
   ],
@@ -283,7 +283,7 @@ All tests passed!
                 onClick={() => {}}
                 className="flex items-center px-3 py-1.5 text-sm rounded-lg bg-obsidian-800 hover:bg-obsidian-700 text-gray-300 transition-colors"
               >
-                <Rotate size={16} className="mr-1.5" />
+                <RefreshCw size={16} className="mr-1.5" /> {/* Replaced Rotate with RefreshCw */}
                 Reset Code
               </button>
             </div>
@@ -297,7 +297,7 @@ All tests passed!
                 {isRunning ? (
                   <>
                     <span className="animate-spin mr-1.5">
-                      <Rotate size={16} />
+                      <RefreshCw size={16} /> {/* Replaced Rotate with RefreshCw */}
                     </span>
                     Running...
                   </>
@@ -321,7 +321,7 @@ All tests passed!
                 {isSubmitting ? (
                   <>
                     <span className="animate-spin mr-1.5">
-                      <Rotate size={16} />
+                      <RefreshCw size={16} /> {/* Replaced Rotate with RefreshCw */}
                     </span>
                     Submitting...
                   </>
