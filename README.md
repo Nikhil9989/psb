@@ -31,12 +31,21 @@ SKILL BRIDGE is an innovative domain-based learning platform designed to bridge 
 To run the project locally:
 
 ```bash
+# For Windows/macOS/Linux with Bash
+# Use the installation script to handle dependency issues
+bash install.sh
+
+# OR for manual installation:
+# Remove existing node_modules and package-lock.json
+rm -rf node_modules package-lock.json
 # Install dependencies
 npm install
 
 # Run the development server
 npm run dev
 ```
+
+> **Note**: If you encounter dependency issues with `npm ci`, use the provided installation script or manually remove `node_modules` and `package-lock.json` before running `npm install`.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
@@ -80,7 +89,8 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies 📦
-        run: npm ci
+        # Use npm install instead of npm ci to avoid package-lock.json issues
+        run: rm -rf node_modules package-lock.json && npm install
 
       - name: Build 🔧
         run: npm run build
