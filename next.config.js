@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Images configuration needs to be directly in the config object, not under experimental
   images: {
     domains: ['api.placeholder.com'],
     unoptimized: true,
@@ -11,7 +12,7 @@ const nextConfig = {
   },
   // Next.js 14 static export configuration
   output: 'export',
-  // No base path needed
+  // Set base path
   basePath: '/psb',
   trailingSlash: false,
 };
