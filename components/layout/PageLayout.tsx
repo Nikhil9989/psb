@@ -1,3 +1,5 @@
+'use client'; // Added 'use client' directive as this component uses React hooks
+
 import React, { ReactNode, useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, ChevronDown, User } from 'lucide-react';
