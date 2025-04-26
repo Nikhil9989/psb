@@ -156,7 +156,7 @@ const successStories = [
   }
 ];
 
-const getDifficultyColor = (difficulty) => {
+const getDifficultyColor = (difficulty: string): string => {
   switch (difficulty) {
     case 'Easy':
       return 'bg-green-600';
