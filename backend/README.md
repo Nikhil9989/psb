@@ -1,204 +1,262 @@
 # SKILL BRIDGE Backend
 
-This directory contains the backend microservices for the SKILL BRIDGE platform. The backend is built using a microservices architecture with services written in Go.
+This is the backend for the SKILL BRIDGE platform, implementing a microservices architecture with Go.
 
 ## Architecture
 
-The backend follows a microservices architecture with the following components:
+The backend is built as a set of microservices:
 
-- **API Gateway**: Central entry point that routes requests to appropriate microservices
-- **User Service**: Manages user profiles, preferences, and role-based access control
-- **Authentication Service**: Handles user authentication, JWT token management, and security
-- **Database**: PostgreSQL for structured data storage
-- **Cache**: Redis for session management and caching
+1. **API Gateway**: Nginx-based service that routes requests to the appropriate microservice
+2. **Authentication Service**: Handles user authentication, JWT token generation, and password management
+3. **User Service**: Manages user accounts, profiles, and preferences
 
-## Services
+## Prerequisites
 
-### API Gateway (Port 8080)
-- Routes requests to appropriate services
-- Handles authentication verification
-- Implements role-based access control
-- Proxies requests to microservices
-
-### User Service (Port 8081)
-- Manages user accounts and profiles
-- Handles user data operations
-- Stores user preferences
-- Implements role management
-
-### Authentication Service (Port 8082)
-- Handles user registration and login
-- Issues and validates JWT tokens
-- Manages refresh tokens
-- Handles password reset and email verification
+- Docker and Docker Compose
+- Go 1.19 or later (for local development)
+- PostgreSQL (optional, for local development without Docker)
+- Redis (optional, for local development without Docker)
 
 ## Getting Started
 
-### Prerequisites
-
-- Go 1.20 or higher
-- Docker and Docker Compose
-- PostgreSQL
-- Redis
-
-### Running Locally with Docker Compose
+### Running with Docker Compose
 
 The easiest way to run the backend is using Docker Compose:
 
 ```bash
-# Navigate to the backend directory
 cd backend
-
-# Start all services
-docker-compose up -d
+docker-compose up
 ```
 
-This will start all services, PostgreSQL, and Redis with the proper configurations.
+This will start all the required services:
+- PostgreSQL database
+- Redis cache
+- User service (port 8081)
+- Authentication service (port 8082)
+- API Gateway (port 8080)
 
-### Running Individual Services Locally
+### Local Development
 
-To run services individually:
+To run services locally for development:
+
+1. Set up the database:
 
 ```bash
-# User Service
+# Install PostgreSQL (if not using Docker)
+# Create the skillbridge_auth database
+psql -U postgres -c "CREATE DATABASE skillbridge_auth;"
+
+# Run database initialization script
+psql -U postgres -d skillbridge_auth -f scripts/db_init.sql
+```
+
+2. Set environment variables (or create a .env file in each service directory):
+
+```
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=skillbridge_auth
+DB_SSL_MODE=disable
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=
+JWT_SECRET=your_jwt_secret_key_change_this_in_production
+USER_SERVICE_URL=http://localhost:8081
+```
+
+3. Run the user service:
+
+```bash
 cd services/user
 go run main.go
+```
 
-# Auth Service
+4. Run the authentication service:
+
+```bash
 cd services/auth
-go run main.go
-
-# API Gateway
-cd services/api-gateway
 go run main.go
 ```
 
 ## API Documentation
 
-### Swagger Documentation
+Swagger documentation is available at:
+- User Service: http://localhost:8081/swagger/index.html
+- Auth Service: http://localhost:8082/swagger/index.html
 
-All services are documented using Swagger/OpenAPI. Once services are running, you can access the Swagger UI at:
+When running through the API Gateway:
+- User Service: http://localhost:8080/api/v1/users/swagger/index.html
+- Auth Service: http://localhost:8080/api/v1/auth/swagger/index.html
 
-- Authentication Service: `http://localhost:8082/swagger/index.html`
-- User Service: `http://localhost:8081/swagger/index.html`
-- API Gateway: `http://localhost:8080/swagger/index.html`
+## Authentication Flow
 
-### Generate Swagger Documentation
+### Registration
 
-The easiest way to generate Swagger documentation is using the included shell script:
-
-```bash
-# From the backend directory
-chmod +x swagger.sh
-./swagger.sh
+```
+POST /api/v1/auth/register
 ```
 
-This script:
-1. Creates a temporary `swagger-models` directory with all required model definitions
-2. Creates necessary wrapper files for each service
-3. Runs the `swag` command with appropriate parameters for each service
-4. Places the generated docs in the correct locations
-
-If you prefer to run the commands manually:
-
-```bash
-# Install swag tool if not already installed
-go install github.com/swaggo/swag/cmd/swag@latest
-
-# Create swagger-models directory with model definitions
-# See swagger.sh for the contents to put in ./swagger-models/models.go
-
-# Generate docs for each service
-swag init -g services/auth/main.go -d ./services/auth,./swagger-models -o services/auth/docs
-swag init -g services/user/main.go -d ./services/user,./swagger-models -o services/user/docs
-swag init -g services/api-gateway/main.go -d ./services/api-gateway,./swagger-models -o services/api-gateway/docs
+Request body:
+```json
+{
+  "email": "user@example.com",
+  "password": "SecureP@ssw0rd",
+  "first_name": "John",
+  "last_name": "Doe",
+  "role": "student",
+  "phone_number": "+1234567890"
+}
 ```
 
-### Authentication API
+### Login
 
-- `POST /api/v1/auth/register` - Register a new user
-- `POST /api/v1/auth/login` - Authenticate a user and get tokens
-- `POST /api/v1/auth/refresh` - Refresh an access token
-- `POST /api/v1/auth/logout` - Log out a user
-- `GET /api/v1/auth/verify-email/:token` - Verify a user's email
-- `POST /api/v1/auth/forgot-password` - Request a password reset
-- `POST /api/v1/auth/reset-password` - Reset password with token
-
-### User API
-
-- `GET /api/v1/users` - Get all users (admin only)
-- `POST /api/v1/users` - Create a new user (admin only)
-- `GET /api/v1/users/:id` - Get a specific user
-- `PUT /api/v1/users/:id` - Update a user
-- `DELETE /api/v1/users/:id` - Delete a user (admin only)
-- `GET /api/v1/users/:id/profile` - Get user profile
-- `PUT /api/v1/users/:id/profile` - Update user profile
-- `GET /api/v1/users/:id/preferences` - Get user preferences
-- `PUT /api/v1/users/:id/preferences` - Update user preferences
-
-## Testing the API
-
-### Using Swagger UI
-
-1. Start the service
-2. Open the Swagger UI at the appropriate URL (e.g., `http://localhost:8082/swagger/index.html` for auth service)
-3. Use the interactive documentation to test endpoints
-
-### Using cURL
-
-Examples for testing the authentication service:
-
-```bash
-# Register a new user
-curl -X POST http://localhost:8082/api/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "user@example.com",
-    "password": "password123",
-    "first_name": "John",
-    "last_name": "Doe",
-    "role": "student"
-  }'
-
-# Login
-curl -X POST http://localhost:8082/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "user@example.com",
-    "password": "password123"
-  }'
 ```
+POST /api/v1/auth/login
+```
+
+Request body:
+```json
+{
+  "email": "user@example.com",
+  "password": "SecureP@ssw0rd"
+}
+```
+
+This will return:
+- Access token (short-lived)
+- Refresh token (longer-lived)
+- User information
+
+### Refreshing Tokens
+
+```
+POST /api/v1/auth/refresh
+```
+
+Request body:
+```json
+{
+  "refresh_token": "your-refresh-token"
+}
+```
+
+### Logout
+
+```
+POST /api/v1/auth/logout
+```
+
+Request body:
+```json
+{
+  "refresh_token": "your-refresh-token"
+}
+```
+
+## Database Schema
+
+### Users Table
+
+Stores user accounts:
+
+- `id`: UUID primary key
+- `email`: Unique email address
+- `password`: Hashed password
+- `first_name`: User's first name
+- `last_name`: User's last name
+- `role`: User's role (student, mentor, admin)
+- `is_verified`: Whether the email is verified
+- `phone_number`: Optional phone number
+- `created_at`: Creation timestamp
+- `updated_at`: Last update timestamp
+
+### Verification Tokens Table
+
+Stores tokens for email verification and password reset:
+
+- `token`: Unique token string (primary key)
+- `user_id`: References users.id
+- `type`: Token type (email_verification, password_reset)
+- `expires_at`: Expiration timestamp
+- `created_at`: Creation timestamp
+
+### User Profiles Table
+
+Stores additional user information:
+
+- `user_id`: References users.id (primary key)
+- `bio`: User bio/description
+- `profile_image_url`: URL to profile image
+- `location`: User's location
+- `social_links`: JSON of social media links
+- `skills`: JSON of skills and proficiency
+- `interests`: JSON of interest areas
+- `education`: JSON of education history
+- `experience`: JSON of work experience
+- `preferred_learning_style`: Learning style preference
+- `created_at`: Creation timestamp
+- `updated_at`: Last update timestamp
+
+### User Preferences Table
+
+Stores user application preferences:
+
+- `user_id`: References users.id (primary key)
+- `email_notifications`: Whether to receive email notifications
+- `sms_notifications`: Whether to receive SMS notifications
+- `push_notifications`: Whether to receive push notifications
+- `language`: Preferred language
+- `theme`: UI theme preference
+- `timezone`: User's timezone
+- `created_at`: Creation timestamp
+- `updated_at`: Last update timestamp
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Database connection errors**:
+   - Check that PostgreSQL is running and accessible
+   - Verify the database credentials in environment variables
+   - Ensure the database and tables have been created
+
+2. **Redis connection errors**:
+   - Check that Redis is running and accessible
+   - Verify the Redis connection details
+
+3. **Service communication errors**:
+   - Verify that all services are running
+   - Check the USER_SERVICE_URL environment variable in the auth service
+
+### Docker Issues
+
+1. **Container not starting**:
+   - Check container logs: `docker logs skillbridge_auth_service`
+   - Ensure ports are not in use by other applications
+
+2. **Database initialization issues**:
+   - The initialization script runs only on the first start
+   - To force reinitialization: `docker-compose down -v`
 
 ## Development Guidelines
 
-- Follow Go best practices and project structure
-- Write unit tests for critical functionality
-- Document all APIs using OpenAPI standards
-- Implement proper error handling and logging
-- Update Swagger documentation when changing API endpoints
+1. **Service Structure**:
+   - `handlers`: HTTP request handlers
+   - `service`: Business logic
+   - `repository`: Data access layer
+   - `main.go`: Service entry point
 
-## Troubleshooting Swagger Generation
+2. **Error Handling**:
+   - Use consistent error responses
+   - Don't expose sensitive information in errors
 
-If you encounter issues with Swagger generation:
+3. **Environment Variables**:
+   - Use environment variables for configuration
+   - Provide sensible defaults
 
-1. Make sure the `swag` tool is installed and in your PATH:
-   ```bash
-   go install github.com/swaggo/swag/cmd/swag@latest
-   ```
-
-2. Run the provided script which creates all necessary files:
-   ```bash
-   ./swagger.sh
-   ```
-
-3. Check that each service has imports for the Swagger UI:
-   ```go
-   import (
-       // Swagger documentation
-       _ "github.com/Nikhil9989/psb/backend/services/auth/docs" // Replace with appropriate service
-       swaggerFiles "github.com/swaggo/files"
-       ginSwagger "github.com/swaggo/gin-swagger"
-   )
-   ```
-
-4. Ensure handler functions have proper Swagger annotations
+4. **API Design**:
+   - Follow RESTful conventions
+   - Document APIs with Swagger
+   - Use consistent response formats
