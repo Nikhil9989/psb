@@ -1,85 +1,94 @@
 version: '3.8'
 
 services:
-  # User Service
-  user-service:
-    build:
-      context: ..
-      dockerfile: backend/services/user/Dockerfile
+  postgres:
+    image: postgres:14-alpine
+    container_name: skillbridge_postgres
     ports:
-      - "8081:8081"
+      - "5432:5432"
     environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=skillbridge_user
-      - JWT_SECRET=your_jwt_secret_key_change_in_production
-      - JWT_ACCESS_EXPIRY=24h
-      - JWT_REFRESH_EXPIRY=168h
-      - JWT_VERIFICATION_EXPIRY=48h
-      - JWT_PASSWORD_RESET_EXPIRY=24h
-    depends_on:
-      - postgres
-    networks:
-      - skillbridge-network
-    restart: on-failure
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: skillbridge_auth
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/db_init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  # Authentication Service
+  redis:
+    image: redis:7-alpine
+    container_name: skillbridge_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   auth-service:
     build:
-      context: ..
-      dockerfile: backend/services/auth/Dockerfile
+      context: .
+      dockerfile: services/auth/Dockerfile
+    container_name: skillbridge_auth_service
     ports:
       - "8082:8082"
     environment:
+      - AUTH_SERVICE_PORT=8082
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - DB_NAME=skillbridge_auth
+      - DB_SSL_MODE=disable
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - JWT_SECRET=your_jwt_secret_key_change_in_production
-      - JWT_ACCESS_EXPIRY=24h
-      - JWT_REFRESH_EXPIRY=168h
-      - JWT_VERIFICATION_EXPIRY=48h
-      - JWT_PASSWORD_RESET_EXPIRY=24h
+      - REDIS_PASSWORD=
+      - JWT_SECRET=your_jwt_secret_key_change_this_in_production
+      - USER_SERVICE_URL=http://user-service:8081
     depends_on:
       - postgres
       - redis
-    networks:
-      - skillbridge-network
+      - user-service
     restart: on-failure
 
-  # PostgreSQL Database
-  postgres:
-    image: postgres:15-alpine
+  user-service:
+    build:
+      context: .
+      dockerfile: services/user/Dockerfile
+    container_name: skillbridge_user_service
     ports:
-      - "5433:5432"
+      - "8081:8081"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./scripts/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
-    networks:
-      - skillbridge-network
+      - USER_SERVICE_PORT=8081
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=skillbridge_auth
+      - DB_SSL_MODE=disable
+    depends_on:
+      - postgres
+    restart: on-failure
 
-  # Redis
-  redis:
-    image: redis:7-alpine
+  api-gateway:
+    image: nginx:alpine
+    container_name: skillbridge_api_gateway
     ports:
-      - "6379:6379"
+      - "8080:8080"
     volumes:
-      - redis-data:/data
-    networks:
-      - skillbridge-network
-
-networks:
-  skillbridge-network:
-    driver: bridge
+      - ./services/api-gateway/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - auth-service
+      - user-service
+    restart: on-failure
 
 volumes:
-  postgres-data:
-  redis-data:
+  postgres_data:
+  redis_data:
