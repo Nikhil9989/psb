@@ -11,8 +11,22 @@ import (
 	"github.com/Nikhil9989/psb/backend/services/auth/service"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	
+	// Swagger documentation
+	_ "github.com/Nikhil9989/psb/backend/docs"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title SKILL BRIDGE Authentication Service API
+// @description API for user authentication and token management
+// @version 1.0
+// @host localhost:8082
+// @BasePath /api/v1
+// @schemes http https
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	// Load .env file if it exists
 	godotenv.Load()
@@ -48,6 +62,9 @@ func main() {
 
 	// Set up Gin router
 	router := gin.Default()
+
+	// Setup Swagger
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// CORS middleware
 	router.Use(func(c *gin.Context) {
