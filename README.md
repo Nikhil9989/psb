@@ -185,7 +185,7 @@ The platform includes a complete authentication system with the following featur
    ```jsx
    'use client';
    
-   import { useAuth } from '@/hooks/useAuth';
+   import { useAuth } from '@/context/AuthContext';
    import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
    
    export default function ProtectedPage() {
@@ -199,17 +199,20 @@ The platform includes a complete authentication system with the following featur
 
 4. Make API requests using the provided hooks:
    ```jsx
-   import { useApiProtected } from '@/hooks/useApiProtected';
+   import { useAuth } from '@/context/AuthContext';
    
    export function YourComponent() {
-     const apiClient = useApiProtected();
+     const { user, isLoading } = useAuth();
      
-     const fetchData = async () => {
-       const response = await apiClient.get('/api/v1/some-endpoint');
-       // Handle the response
-     };
-     
-     return <button onClick={fetchData}>Fetch Data</button>;
+     return (
+       <div>
+         {isLoading ? (
+           <p>Loading...</p>
+         ) : (
+           <p>Welcome, {user?.firstName}!</p>
+         )}
+       </div>
+     );
    }
    ```
 
@@ -243,15 +246,6 @@ The platform includes a complete authentication system with the following featur
    }
    ```
 
-3. Test API endpoints:
-   - Use Postman or curl to test endpoints
-   - Example login request:
-     ```bash
-     curl -X POST http://localhost:8082/api/v1/auth/login \
-       -H "Content-Type: application/json" \
-       -d '{"email":"test@example.com","password":"yourpassword"}'
-     ```
-
 ## Building for Production
 
 ### Frontend
@@ -268,25 +262,51 @@ Build the Docker containers with production settings:
 
 ```bash
 cd backend
-docker-compose -f docker-compose.prod.yml build
+docker-compose build
 ```
 
 ## Deployment
 
-### Frontend
-
 For automatic deployment to GitHub Pages, you can set up a GitHub Actions workflow:
 
 1. Create a `.github/workflows/deploy.yml` file
-2. Add the workflow configuration as described in the original README
+2. Add the following workflow configuration:
 
-### Backend
+```yaml
+name: Deploy to GitHub Pages
 
-Deploy the backend services to your preferred cloud provider:
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
 
-1. Push Docker images to a registry
-2. Deploy containers using Kubernetes, Docker Swarm, or cloud-specific services
-3. Set up proper environment variables for production
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js ⚙️
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies 📦
+        # Use npm install instead of npm ci to avoid package-lock.json issues
+        run: rm -rf node_modules package-lock.json && npm install
+
+      - name: Build 🔧
+        run: npm run build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: out
+          branch: gh-pages
+```
 
 ## Troubleshooting
 
@@ -308,24 +328,24 @@ Deploy the backend services to your preferred cloud provider:
    - Verify PostgreSQL and Redis are running
    - Check connection parameters in environment variables
    - Ensure databases are properly initialized
+   - If databases don't exist, run these commands:
+     ```bash
+     # Remove existing volumes and containers
+     docker-compose down -v
+     
+     # Start services again
+     docker-compose up
+     ```
 
 2. **JWT token issues**:
    - Check that JWT_SECRET is set
    - Verify token expiry times are properly formatted (e.g., "24h")
    - Ensure clocks are synchronized between services
 
-## Contributing
+## Design Features
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature/your-feature-name`
-5. Open a pull request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contact
-
-For questions and support, please open an issue on the GitHub repository.
+- Responsive design for all screen sizes
+- Consistent color scheme with indigo and yellow accents
+- Animated elements for better user engagement
+- Mobile-optimized navigation
+- Accessible to all users following WCAG guidelines
