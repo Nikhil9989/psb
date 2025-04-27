@@ -85,60 +85,30 @@ All services are documented using Swagger/OpenAPI. Once services are running, yo
 
 ### Swagger Setup and Generation
 
-This project uses [gin-swagger](https://github.com/swaggo/gin-swagger) to generate API documentation.
+To generate the Swagger documentation correctly:
 
-#### Installing Swagger Tools
-
+1. Install the required tools:
 ```bash
-# Install swag CLI
 go install github.com/swaggo/swag/cmd/swag@latest
-
-# Ensure $GOPATH/bin is in your PATH
-export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
-#### Generating Swagger Documentation
-
-Generate documentation for each service:
-
+2. Generate documentation using a proper folder structure:
 ```bash
-# Generate documentation for Auth Service
-cd backend
-swag init -g services/auth/main.go -o docs
+# From the backend directory
 
-# Generate documentation for User Service
-swag init -g services/user/main.go -o docs
+# For Auth Service
+swag init -g services/auth/main.go -d ./,./services/auth,./pkg/models -o docs --parseDependency
 
-# Generate documentation for API Gateway
-swag init -g services/api-gateway/main.go -o docs
+# For User Service
+swag init -g services/user/main.go -d ./,./services/user,./pkg/models -o docs --parseDependency 
+
+# For API Gateway
+swag init -g services/api-gateway/main.go -d ./,./services/api-gateway,./pkg/models -o docs --parseDependency
 ```
 
-#### Adding Swagger Annotations
+3. Each service contains a `docs.go` file that imports model packages for Swagger to find them.
 
-Swagger annotations are added as comments in the code. Here's an example:
-
-```go
-// @title SKILL BRIDGE Authentication Service API
-// @description API for user authentication and token management
-// @version 1.0
-// @host localhost:8082
-// @BasePath /api/v1
-// @schemes http https
-// @securityDefinitions.apikey BearerAuth
-// @in header
-// @name Authorization
-
-// For endpoints:
-// @Summary Register a new user
-// @Description Creates a new user account and sends email verification
-// @Tags Authentication
-// @Accept json
-// @Produce json
-// @Param request body models.CreateUserRequest true "User registration details"
-// @Success 201 {object} models.APIResponse "User registered successfully"
-// @Failure 400 {object} models.APIResponse "Invalid request"
-// @Router /auth/register [post]
-```
+For detailed instructions and common issue solutions, see the [Swagger Documentation README](./docs/README.md).
 
 ### Authentication API
 
