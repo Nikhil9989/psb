@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/Nikhil9989/psb/backend/pkg/utils"
 	"github.com/Nikhil9989/psb/backend/services/user/handlers"
