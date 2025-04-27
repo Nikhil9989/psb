@@ -8,6 +8,7 @@ import (
 	"github.com/Nikhil9989/psb/backend/pkg/utils"
 	"github.com/Nikhil9989/psb/backend/services/user/handlers"
 	"github.com/Nikhil9989/psb/backend/services/user/repository"
+	"github.com/Nikhil9989/psb/backend/services/user/service"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -38,7 +39,7 @@ func main() {
 	dbPort := utils.GetEnv("DB_PORT", "5432")
 	dbUser := utils.GetEnv("DB_USER", "postgres")
 	dbPassword := utils.GetEnv("DB_PASSWORD", "postgres")
-	dbName := utils.GetEnv("DB_NAME", "skillbridge")
+	dbName := utils.GetEnv("DB_NAME", "skillbridge_auth")
 	sslMode := utils.GetEnv("DB_SSL_MODE", "disable")
 
 	dsn := fmt.Sprintf(
@@ -58,8 +59,9 @@ func main() {
 
 	log.Println("Connected to database successfully")
 
-	// Initialize repositories and handlers
+	// Initialize repositories, services and handlers
 	userRepo := repository.NewUserRepository(db)
+	userService := service.NewUserService(userRepo)
 	userHandler := handlers.NewUserHandler(userRepo)
 
 	// Set up Gin router
@@ -87,6 +89,46 @@ func main() {
 			// User preferences routes
 			users.GET("/:id/preferences", userHandler.GetUserPreferences)
 			users.PUT("/:id/preferences", userHandler.UpdateUserPreferences)
+			
+			// Additional endpoints for auth service integration
+			users.GET("/by-email/:email", func(c *gin.Context) {
+				email := c.Param("email")
+				user, err := userService.GetUserByEmail(email)
+				if err != nil {
+					c.JSON(404, gin.H{"success": false, "message": "User not found", "error": err.Error()})
+					return
+				}
+				c.JSON(200, gin.H{"success": true, "message": "User found", "data": user})
+			})
+
+			users.PUT("/:id/verify", func(c *gin.Context) {
+				id := c.Param("id")
+				err := userService.SetUserVerified(id)
+				if err != nil {
+					c.JSON(500, gin.H{"success": false, "message": "Failed to verify user", "error": err.Error()})
+					return
+				}
+				c.JSON(200, gin.H{"success": true, "message": "User verified successfully"})
+			})
+
+			users.PUT("/:id/password", func(c *gin.Context) {
+				id := c.Param("id")
+				var data struct {
+					Password string `json:"password" binding:"required"`
+				}
+
+				if err := c.ShouldBindJSON(&data); err != nil {
+					c.JSON(400, gin.H{"success": false, "message": "Invalid request", "error": err.Error()})
+					return
+				}
+
+				err := userService.UpdatePassword(id, data.Password)
+				if err != nil {
+					c.JSON(500, gin.H{"success": false, "message": "Failed to update password", "error": err.Error()})
+					return
+				}
+				c.JSON(200, gin.H{"success": true, "message": "Password updated successfully"})
+			})
 		}
 	}
 
