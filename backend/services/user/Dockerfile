@@ -1,4 +1,4 @@
-FROM golang:1.20-alpine AS builder
+FROM golang:1.21-alpine AS builder
 
 # Set working directory for the build
 WORKDIR /app
@@ -8,7 +8,6 @@ COPY ./ /app/
 
 # Set working directory for Go Modules
 WORKDIR /app/
-
 
 # Install required dependencies explicitly
 RUN go get github.com/gin-gonic/gin
