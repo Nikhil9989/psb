@@ -6,19 +6,24 @@ import (
 	"time"
 
 	"github.com/Nikhil9989/psb/backend/pkg/models"
-	"github.com/Nikhil9989/psb/backend/pkg/utils"
 	"github.com/Nikhil9989/psb/backend/services/user/repository"
+	"github.com/Nikhil9989/psb/backend/services/user/service"
 	"github.com/gin-gonic/gin"
 )
 
 // UserHandler handles HTTP requests for user operations
 type UserHandler struct {
-	userRepo *repository.UserRepository
+	userService *service.UserService
+	userRepo    *repository.UserRepository
 }
 
 // NewUserHandler creates a new UserHandler
 func NewUserHandler(userRepo *repository.UserRepository) *UserHandler {
-	return &UserHandler{userRepo: userRepo}
+	userService := service.NewUserService(userRepo)
+	return &UserHandler{
+		userService: userService,
+		userRepo:    userRepo,
+	}
 }
 
 // CreateUser handles user creation requests
@@ -41,68 +46,18 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 		return
 	}
 
-	// Validate email and password
-	if !utils.ValidateEmail(request.Email) {
-		c.JSON(http.StatusBadRequest, models.NewErrorResponse("Invalid email", "Please provide a valid email address"))
-		return
-	}
-
-	if !utils.ValidatePassword(request.Password) {
-		c.JSON(http.StatusBadRequest, models.NewErrorResponse(
-			"Invalid password",
-			"Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character",
-		))
-		return
-	}
-
-	// Check if user already exists
-	existingUser, err := h.userRepo.GetUserByEmail(request.Email)
-	if err == nil && existingUser != nil {
-		c.JSON(http.StatusConflict, models.NewErrorResponse("User already exists", "Email is already registered"))
-		return
-	}
-
-	// Hash password
-	hashedPassword, err := utils.HashPassword(request.Password)
+	userResponse, err := h.userService.CreateUser(&request)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.NewErrorResponse("Failed to create user", "Internal server error"))
-		return
-	}
-
-	// Create user
-	now := time.Now()
-	userID := utils.GenerateUUID()
-
-	user := &models.User{
-		ID:          userID,
-		Email:       request.Email,
-		Password:    hashedPassword,
-		FirstName:   request.FirstName,
-		LastName:    request.LastName,
-		Role:        request.Role,
-		IsVerified:  false,
-		PhoneNumber: request.PhoneNumber,
-		CreatedAt:   now,
-		UpdatedAt:   now,
-	}
-
-	err = h.userRepo.CreateUser(user)
-	if err != nil {
+		if err.Error() == "email already registered" {
+			c.JSON(http.StatusConflict, models.NewErrorResponse("User already exists", "Email is already registered"))
+			return
+		}
+		if err.Error() == "invalid email format" || err.Error() == "password must be at least 8 characters with at least one uppercase, lowercase, number, and special character" {
+			c.JSON(http.StatusBadRequest, models.NewErrorResponse("Invalid input", err.Error()))
+			return
+		}
 		c.JSON(http.StatusInternalServerError, models.NewErrorResponse("Failed to create user", err.Error()))
 		return
-	}
-
-	// Return user response (excluding password)
-	userResponse := models.UserResponse{
-		ID:          user.ID,
-		Email:       user.Email,
-		FirstName:   user.FirstName,
-		LastName:    user.LastName,
-		Role:        user.Role,
-		IsVerified:  user.IsVerified,
-		PhoneNumber: user.PhoneNumber,
-		CreatedAt:   user.CreatedAt,
-		UpdatedAt:   user.UpdatedAt,
 	}
 
 	c.JSON(http.StatusCreated, models.NewSuccessResponse("User created successfully", userResponse))
@@ -131,34 +86,18 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 		pageSize = 10
 	}
 
-	// Get users from repository
-	users, err := h.userRepo.GetUsers(page, pageSize)
+	// Get users from service
+	users, err := h.userService.GetUsers(page, pageSize)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.NewErrorResponse("Failed to get users", err.Error()))
 		return
 	}
 
-	// Convert to response objects (excluding passwords)
-	userResponses := make([]models.UserResponse, len(users))
-	for i, user := range users {
-		userResponses[i] = models.UserResponse{
-			ID:          user.ID,
-			Email:       user.Email,
-			FirstName:   user.FirstName,
-			LastName:    user.LastName,
-			Role:        user.Role,
-			IsVerified:  user.IsVerified,
-			PhoneNumber: user.PhoneNumber,
-			CreatedAt:   user.CreatedAt,
-			UpdatedAt:   user.UpdatedAt,
-		}
-	}
-
 	response := gin.H{
-		"users":      userResponses,
-		"page":       page,
-		"page_size":  pageSize,
-		"total_items": len(userResponses), // This is not the total count, just the current page count
+		"users":       users,
+		"page":        page,
+		"page_size":   pageSize,
+		"total_items": len(users), // This is not the total count, just the current page count
 	}
 
 	c.JSON(http.StatusOK, models.NewSuccessResponse("Users retrieved successfully", response))
@@ -177,23 +116,10 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 func (h *UserHandler) GetUserByID(c *gin.Context) {
 	userID := c.Param("id")
 
-	user, err := h.userRepo.GetUserByID(userID)
+	userResponse, err := h.userService.GetUserByID(userID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, models.NewErrorResponse("User not found", err.Error()))
 		return
-	}
-
-	// Convert to response object (excluding password)
-	userResponse := models.UserResponse{
-		ID:          user.ID,
-		Email:       user.Email,
-		FirstName:   user.FirstName,
-		LastName:    user.LastName,
-		Role:        user.Role,
-		IsVerified:  user.IsVerified,
-		PhoneNumber: user.PhoneNumber,
-		CreatedAt:   user.CreatedAt,
-		UpdatedAt:   user.UpdatedAt,
 	}
 
 	c.JSON(http.StatusOK, models.NewSuccessResponse("User retrieved successfully", userResponse))
@@ -216,13 +142,6 @@ func (h *UserHandler) GetUserByID(c *gin.Context) {
 func (h *UserHandler) UpdateUser(c *gin.Context) {
 	userID := c.Param("id")
 
-	// Check if user exists
-	user, err := h.userRepo.GetUserByID(userID)
-	if err != nil {
-		c.JSON(http.StatusNotFound, models.NewErrorResponse("User not found", err.Error()))
-		return
-	}
-
 	// Parse request body
 	var request models.UpdateUserRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -230,36 +149,10 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	// Update user fields
-	if request.FirstName != "" {
-		user.FirstName = request.FirstName
-	}
-	if request.LastName != "" {
-		user.LastName = request.LastName
-	}
-	if request.PhoneNumber != "" {
-		user.PhoneNumber = request.PhoneNumber
-	}
-	user.UpdatedAt = time.Now()
-
-	// Save changes
-	err = h.userRepo.UpdateUser(user)
+	userResponse, err := h.userService.UpdateUser(userID, &request)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.NewErrorResponse("Failed to update user", err.Error()))
+		c.JSON(http.StatusNotFound, models.NewErrorResponse("User not found", err.Error()))
 		return
-	}
-
-	// Return updated user
-	userResponse := models.UserResponse{
-		ID:          user.ID,
-		Email:       user.Email,
-		FirstName:   user.FirstName,
-		LastName:    user.LastName,
-		Role:        user.Role,
-		IsVerified:  user.IsVerified,
-		PhoneNumber: user.PhoneNumber,
-		CreatedAt:   user.CreatedAt,
-		UpdatedAt:   user.UpdatedAt,
 	}
 
 	c.JSON(http.StatusOK, models.NewSuccessResponse("User updated successfully", userResponse))
@@ -279,17 +172,9 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 func (h *UserHandler) DeleteUser(c *gin.Context) {
 	userID := c.Param("id")
 
-	// Check if user exists
-	_, err := h.userRepo.GetUserByID(userID)
+	err := h.userService.DeleteUser(userID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, models.NewErrorResponse("User not found", err.Error()))
-		return
-	}
-
-	// Delete user
-	err = h.userRepo.DeleteUser(userID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.NewErrorResponse("Failed to delete user", err.Error()))
 		return
 	}
 
@@ -311,7 +196,7 @@ func (h *UserHandler) GetUserProfile(c *gin.Context) {
 	userID := c.Param("id")
 
 	// Check if user exists
-	_, err := h.userRepo.GetUserByID(userID)
+	_, err := h.userService.GetUserByID(userID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, models.NewErrorResponse("User not found", err.Error()))
 		return
@@ -345,7 +230,7 @@ func (h *UserHandler) UpdateUserProfile(c *gin.Context) {
 	userID := c.Param("id")
 
 	// Check if user exists
-	_, err := h.userRepo.GetUserByID(userID)
+	_, err := h.userService.GetUserByID(userID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, models.NewErrorResponse("User not found", err.Error()))
 		return
@@ -406,7 +291,7 @@ func (h *UserHandler) GetUserPreferences(c *gin.Context) {
 	userID := c.Param("id")
 
 	// Check if user exists
-	_, err := h.userRepo.GetUserByID(userID)
+	_, err := h.userService.GetUserByID(userID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, models.NewErrorResponse("User not found", err.Error()))
 		return
@@ -440,7 +325,7 @@ func (h *UserHandler) UpdateUserPreferences(c *gin.Context) {
 	userID := c.Param("id")
 
 	// Check if user exists
-	_, err := h.userRepo.GetUserByID(userID)
+	_, err := h.userService.GetUserByID(userID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, models.NewErrorResponse("User not found", err.Error()))
 		return
