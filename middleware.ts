@@ -2,15 +2,15 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('auth-token')?.value || localStorage?.getItem('tokens');
+  // Check for auth token in cookies
+  const token = request.cookies.get('auth-token')?.value;
+  
   const isAuthPage = request.nextUrl.pathname.startsWith('/login') || 
                      request.nextUrl.pathname.startsWith('/signup') ||
                      request.nextUrl.pathname.startsWith('/forgot-password') ||
                      request.nextUrl.pathname.startsWith('/reset-password');
 
-  // For demo purposes, we'll also check localStorage in client components
   // This is a simplified approach - in production, use secure HTTP-only cookies
-  
   if (!token && !isAuthPage) {
     // If no token and trying to access protected route, redirect to login
     const url = new URL('/login', request.url);
