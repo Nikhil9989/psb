@@ -1,38 +1,21 @@
+// app/login/page.tsx
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Eye, EyeOff, ArrowRight, LogIn } from 'lucide-react';
-
-// Note: Removed metadata export since we can't use it with 'use client'
-// Metadata should be in a separate metadata.ts file or layout.tsx file
+import { Eye, EyeOff, LogIn } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const router = useRouter();
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const { login, isLoading, error } = useAuth();
+  
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    
-    // Simulate login for demo purposes
-    setTimeout(() => {
-      // For demo, let's consider any email with password "password123" as valid
-      if (password === 'password123') {
-        // Successful login
-        router.push('/dashboard');
-      } else {
-        // Failed login
-        setError('Invalid email or password. Please try again.');
-      }
-      setIsLoading(false);
-    }, 1500);
+    await login(email, password);
   };
   
   return (

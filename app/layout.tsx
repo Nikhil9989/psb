@@ -1,12 +1,11 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+// app/layout.tsx
+import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'SKILL BRIDGE - Domain-Based Learning Platform',
-  description: 'Bridge the skill gap with domain-based learning approach. Transform theoretical knowledge into practical expertise.',
+  title: 'Skill Bridge - Domain-Based Learning Platform',
+  description: 'An innovative domain-based learning platform designed to bridge the gap between theoretical education and practical industry skills.',
 };
 
 export default function RootLayout({
@@ -16,8 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        {children}
+      <body>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
