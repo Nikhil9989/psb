@@ -4,9 +4,9 @@ FROM golang:1.21-alpine AS builder
 WORKDIR /app
 
 # Copy the entire backend directory
-COPY backend/ /app/backend/
+COPY . /app/
 
-# Set working directory for Go Modules
+# Set working directory where go.mod is located
 WORKDIR /app/backend
 
 # Clean any existing modules and download dependencies
