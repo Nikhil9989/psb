@@ -1,0 +1,520 @@
+openapi: 3.0.0
+info:
+  title: SKILL BRIDGE Authentication Service API
+  description: API for user authentication and token management for the SKILL BRIDGE platform
+  version: 1.0.0
+  contact:
+    name: SKILL BRIDGE Development Team
+servers:
+  - url: http://localhost:8082/api/v1
+    description: Local development server
+  - url: https://api.skillbridge.example.com/api/v1
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: Authentication operations
+  - name: Account
+    description: Account management operations
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      description: Creates a new user account and sends email verification
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                success: true
+                message: "User registered successfully. Please check your email for verification."
+                data:
+                  id: "user123"
+                  email: "user@example.com"
+                  first_name: "John"
+                  last_name: "Doe"
+                  role: "student"
+                  is_verified: false
+                  phone_number: "+919876543210"
+                  created_at: "2025-04-27T10:00:00Z"
+                  updated_at: "2025-04-27T10:00:00Z"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: Authenticates user credentials and returns access and refresh tokens
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                success: true
+                message: "Login successful"
+                data:
+                  user:
+                    id: "user123"
+                    email: "user@example.com"
+                    first_name: "John"
+                    last_name: "Doe"
+                    role: "student"
+                    is_verified: true
+                    phone_number: "+919876543210"
+                    created_at: "2025-04-27T10:00:00Z"
+                    updated_at: "2025-04-27T10:00:00Z"
+                  tokens:
+                    access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    refresh_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    expires_in: 3600
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh access token
+      description: Generates a new access token using a valid refresh token
+      operationId: refreshToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                success: true
+                message: "Token refreshed successfully"
+                data:
+                  access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  refresh_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  expires_in: 3600
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Token refresh failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: User logout
+      description: Invalidates the refresh token to log out the user
+      operationId: logoutUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                success: true
+                message: "Logout successful"
+                data: null
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Logout failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/verify-email/{token}:
+    get:
+      tags:
+        - Account
+      summary: Verify email
+      description: Verifies a user's email address using the provided token
+      operationId: verifyEmail
+      parameters:
+        - name: token
+          in: path
+          required: true
+          description: Email verification token
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Email verified successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                success: true
+                message: "Email verified successfully"
+                data: null
+        '400':
+          description: Email verification failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/forgot-password:
+    post:
+      tags:
+        - Account
+      summary: Request password reset
+      description: Sends a password reset email to the provided email address
+      operationId: forgotPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+      responses:
+        '200':
+          description: If email exists, password reset instructions will be sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                success: true
+                message: "If your email is registered, you will receive password reset instructions"
+                data: null
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /auth/reset-password:
+    post:
+      tags:
+        - Account
+      summary: Reset password
+      description: Resets a user's password using a valid reset token
+      operationId: resetPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+      responses:
+        '200':
+          description: Password reset successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                success: true
+                message: "Password reset successfully"
+                data: null
+        '400':
+          description: Password reset failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /health:
+    get:
+      tags:
+        - System
+      summary: Health check
+      description: Returns the health status of the authentication service
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+                  service:
+                    type: string
+                    example: "auth-service"
+
+components:
+  schemas:
+    CreateUserRequest:
+      type: object
+      required:
+        - email
+        - password
+        - first_name
+        - last_name
+        - role
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "user@example.com"
+        password:
+          type: string
+          format: password
+          minLength: 8
+          description: User's password (min 8 chars)
+          example: "P@ssw0rd123"
+        first_name:
+          type: string
+          description: User's first name
+          example: "John"
+        last_name:
+          type: string
+          description: User's last name
+          example: "Doe"
+        role:
+          type: string
+          enum: [student, mentor, admin, institution, industry]
+          description: User's role in the system
+          example: "student"
+        phone_number:
+          type: string
+          description: User's phone number (optional)
+          example: "+919876543210"
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "user@example.com"
+        password:
+          type: string
+          format: password
+          description: User's password
+          example: "P@ssw0rd123"
+
+    RefreshRequest:
+      type: object
+      required:
+        - refresh_token
+      properties:
+        refresh_token:
+          type: string
+          description: Refresh token issued during login or refresh
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+    PasswordResetRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email address for password reset
+          example: "user@example.com"
+
+    ResetPasswordRequest:
+      type: object
+      required:
+        - token
+        - new_password
+      properties:
+        token:
+          type: string
+          description: Password reset token received in email
+          example: "1a2b3c4d5e6f7g8h9i0j"
+        new_password:
+          type: string
+          format: password
+          minLength: 8
+          description: New password (min 8 chars)
+          example: "NewP@ssw0rd456"
+
+    TokenPair:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: JWT access token
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        refresh_token:
+          type: string
+          description: JWT refresh token
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        expires_in:
+          type: integer
+          description: Seconds until access token expires
+          example: 3600
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+          example: "user123"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "user@example.com"
+        first_name:
+          type: string
+          description: User's first name
+          example: "John"
+        last_name:
+          type: string
+          description: User's last name
+          example: "Doe"
+        role:
+          type: string
+          enum: [student, mentor, admin, institution, industry]
+          description: User's role in the system
+          example: "student"
+        is_verified:
+          type: boolean
+          description: Whether the user's email is verified
+          example: true
+        phone_number:
+          type: string
+          description: User's phone number
+          example: "+919876543210"
+        created_at:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+          example: "2025-04-27T10:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: Account last update timestamp
+          example: "2025-04-27T10:00:00Z"
+
+    LoginResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserResponse'
+        tokens:
+          $ref: '#/components/schemas/TokenPair'
+
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the request was successful
+          example: true
+        message:
+          type: string
+          description: Human-readable success message
+          example: "Operation successful"
+        data:
+          type: object
+          description: Response data (varies based on endpoint)
+          nullable: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Always false for error responses
+          example: false
+        message:
+          type: string
+          description: Human-readable error description
+          example: "Operation failed"
+        error:
+          type: string
+          description: Technical error details
+          example: "Invalid credentials provided"
+  
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from login or refresh
+
+security:
+  - BearerAuth: []
