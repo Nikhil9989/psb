@@ -1,145 +1,136 @@
-# Swagger Documentation Setup Guide
+# SKILL BRIDGE API Documentation
 
-This guide will help you properly set up and generate Swagger/OpenAPI documentation for the SKILL BRIDGE microservices.
+This directory contains Swagger/OpenAPI documentation for the SKILL BRIDGE microservices.
 
-## Common Issues
+## Generating Documentation
 
-When running `swag init`, you might encounter these issues:
+### Prerequisites
 
-1. **"No Go files in directory"**: Running from the wrong directory
-2. **"Cannot find type definition"**: Missing model or type reference
-3. **"Failed to get package name"**: Incorrect package structure or import
-
-## Correct Usage for Each Service
-
-### Authentication Service
-
-Generate from the service directory (not the backend root):
+Install the Swagger command-line tool:
 
 ```bash
-cd backend/services/auth
-swag init -o ../../docs/auth
+go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-### User Service
+Ensure the binary is in your PATH:
 
 ```bash
-cd backend/services/user
-swag init -o ../../docs/user
+export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
-### API Gateway
+### Generate Documentation for Each Service
+
+From the root `backend` directory:
 
 ```bash
-cd backend/services/api-gateway
-swag init -o ../../docs/api-gateway
+# Generate documentation for Auth Service with output to shared docs directory
+swag init -g services/auth/main.go -o docs --pd
+
+# Generate documentation for User Service with output to shared docs directory
+swag init -g services/user/main.go -o docs --pd
+
+# Generate documentation for API Gateway with output to shared docs directory
+swag init -g services/api-gateway/main.go -o docs --pd
 ```
 
-## Adding Required Type Definitions
+### Common Issues and Solutions
 
-Some Swagger annotations may reference types that need to be explicitly imported:
+1. **Package Not Found Errors**:
+   - Ensure all necessary model imports are added to each service's docs.go file
+   - Example (in auth/docs.go):
+     ```go
+     // Import references to model packages to make them available to Swagger
+     _ "github.com/Nikhil9989/psb/backend/pkg/models"
+     ```
+
+2. **Model Definition Not Found**:
+   - Use the `--pd` flag to parse dependencies
+   - Use `-d` to specify additional directories to scan for model definitions
+
+3. **No Go Files in Directory Error**:
+   - Explicitly specify the service directory path
+   - Example: `swag init -g services/auth/main.go -d ./services/auth -o docs`
+
+## API Documentation by Service
+
+### Authentication Service (Port 8082)
+
+Swagger UI: http://localhost:8082/swagger/index.html
+
+Handles user authentication and token management:
+- User registration with email verification
+- Login and token issuing
+- Token refresh and revocation
+- Password reset functionality
+
+### User Service (Port 8081)
+
+Swagger UI: http://localhost:8081/swagger/index.html
+
+Manages user data and profiles:
+- User information management
+- User profile operations
+- User preferences
+- Role-based permissions
+
+### API Gateway (Port 8080)
+
+Swagger UI: http://localhost:8080/swagger/index.html
+
+Central entry point for all services:
+- Request routing
+- Authentication validation
+- Rate limiting
+- Response caching
+
+## Manual Testing with cURL
+
+Examples of testing the authentication API:
+
+```bash
+# Register a new user
+curl -X POST http://localhost:8082/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "password123",
+    "first_name": "Test",
+    "last_name": "User",
+    "role": "student"
+  }'
+
+# Login
+curl -X POST http://localhost:8082/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "password123"
+  }'
+```
+
+## Models
+
+Common models are defined in the `backend/pkg/models` package for consistency across services:
+- Authentication-related models
+- User profile models
+- API response models
+
+## Adding Swagger Annotations
+
+Example annotations for handlers:
 
 ```go
-// For handlers/user_handler.go
-import (
-    // Other imports...
-    "github.com/Nikhil9989/psb/backend/pkg/models" // Ensure this import exists
-)
-
-// @Summary Get user by ID
-// @Description Get detailed information about a user
-// @Tags Users
-// @Accept json
-// @Produce json
-// @Param id path string true "User ID"
-// @Success 200 {object} models.APIResponse{data=models.UserResponse} "User found"
-// @Failure 400 {object} models.APIResponse "Bad request"
-// @Failure 404 {object} models.APIResponse "User not found"
-// @Router /users/{id} [get]
-```
-
-## Generating Combined Documentation
-
-To generate documentation for all services that gets stored in a central location:
-
-```bash
-# Create the combined docs structure
-mkdir -p backend/docs/{auth,user,api-gateway}
-
-# Generate for each service
-cd backend/services/auth
-swag init -o ../../docs/auth
-
-cd ../user
-swag init -o ../../docs/user
-
-cd ../api-gateway
-swag init -o ../../docs/api-gateway
-```
-
-## Setting Up Service to Use Docs
-
-In each service's main.go file, ensure you're importing the correct docs package:
-
-```go
-import (
-    // Other imports...
-    
-    // For auth service
-    _ "github.com/Nikhil9989/psb/backend/docs/auth"
-    swaggerFiles "github.com/swaggo/files"
-    ginSwagger "github.com/swaggo/gin-swagger"
-)
-
-// In your setup code:
-router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-```
-
-## Resolving "Cannot Find Type Definition" Errors
-
-These errors often happen when:
-
-1. The referenced type isn't imported in the file with the Swagger annotation
-2. The type exists in another service but isn't accessible
-
-Solution:
-
-1. Make sure all model types are in a shared package (e.g., `backend/pkg/models`)
-2. Import this package where Swagger annotations are used 
-3. Use fully qualified type names in annotations
-4. If needed, create duplicate type definitions in the local service for documentation purposes
-
-## Verifying Documentation Generation
-
-After generating documentation, verify the generated files:
-
-```bash
-# Check auth docs
-ls -la backend/docs/auth
-
-# Check the content of the main swagger file
-cat backend/docs/auth/docs.go
-```
-
-## Common Swagger Annotation Patterns
-
-```go
-// Service Info (in main.go)
-// @title SKILL BRIDGE Authentication Service API
-// @description API for user authentication and token management
-// @version 1.0
-// @host localhost:8082
-// @BasePath /api/v1
-
-// Route Annotation (in handlers)
-// @Summary Login user
-// @Description Authenticate user and return tokens
+// @Summary Register a new user
+// @Description Creates a new user account and sends email verification
 // @Tags Authentication
 // @Accept json
 // @Produce json
-// @Param request body models.LoginRequest true "Login credentials"
-// @Success 200 {object} models.APIResponse{data=models.LoginResponse} "Login successful"
+// @Param request body models.CreateUserRequest true "User registration details"
+// @Success 201 {object} models.APIResponse "User registered successfully"
 // @Failure 400 {object} models.APIResponse "Invalid request"
-// @Failure 401 {object} models.APIResponse "Authentication failed"
-// @Router /auth/login [post]
+// @Failure 500 {object} models.APIResponse "Failed to register user"
+// @Router /auth/register [post]
+func (h *AuthHandler) Register(c *gin.Context) {
+    // Implementation...
+}
 ```
