@@ -92,23 +92,31 @@ To generate the Swagger documentation correctly:
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-2. Generate documentation using a proper folder structure:
+2. Generate documentation using the centralized swagger models:
 ```bash
 # From the backend directory
 
-# For Auth Service
-swag init -g services/auth/main.go -d ./,./services/auth,./pkg/models -o docs --parseDependency
+# For Auth Service - important to include the root directory for swagger.go
+swag init -g services/auth/main.go -d ./ -o services/auth/docs
 
 # For User Service
-swag init -g services/user/main.go -d ./,./services/user,./pkg/models -o docs --parseDependency 
+swag init -g services/user/main.go -d ./ -o services/user/docs
 
 # For API Gateway
-swag init -g services/api-gateway/main.go -d ./,./services/api-gateway,./pkg/models -o docs --parseDependency
+swag init -g services/api-gateway/main.go -d ./ -o services/api-gateway/docs
 ```
 
-3. Each service contains a `docs.go` file that imports model packages for Swagger to find them.
+3. Each service should import the docs in their main.go:
+```go
+import (
+    // Swagger documentation
+    _ "github.com/Nikhil9989/psb/backend/services/auth/docs"
+    swaggerFiles "github.com/swaggo/files"
+    ginSwagger "github.com/swaggo/gin-swagger"
+)
+```
 
-For detailed instructions and common issue solutions, see the [Swagger Documentation README](./docs/README.md).
+For more detailed instructions and common issue solutions, see the [Swagger Documentation README](./docs/README.md).
 
 ### Authentication API
 
@@ -172,3 +180,20 @@ curl -X POST http://localhost:8082/api/v1/auth/login \
 - Document all APIs using OpenAPI standards
 - Implement proper error handling and logging
 - Update Swagger documentation when changing API endpoints
+
+## Troubleshooting Swagger Generation
+
+If you encounter issues with Swagger generation:
+
+1. **Type Definition Not Found Error**
+   - Check that you're including the root directory in your `-d` flag to find the swagger.go file
+   - Ensure all model types are defined in swagger.go with proper tags
+   - Make sure handlers are properly importing the packages with model definitions
+
+2. **No Go Files Error**
+   - This warning about the root directory is expected and can be ignored as long as the service-specific directories are found
+
+3. **General Swagger Issues**
+   - Check that all handler functions have proper Swagger annotations
+   - Ensure the main.go file has the correct Swagger configuration header
+   - Verify that all dependencies are properly imported
