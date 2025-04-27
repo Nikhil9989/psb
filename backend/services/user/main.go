@@ -11,8 +11,22 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	
+	// Swagger documentation
+	_ "github.com/Nikhil9989/psb/backend/docs"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title SKILL BRIDGE User Service API
+// @description API for the SKILL BRIDGE user management system
+// @version 1.0
+// @host localhost:8081
+// @BasePath /api/v1
+// @schemes http https
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	// Load environment variables
 	if err := godotenv.Load(); err != nil {
@@ -50,6 +64,9 @@ func main() {
 
 	// Set up Gin router
 	router := gin.Default()
+
+	// Setup Swagger
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// API routes
 	api := router.Group("/api/v1")
