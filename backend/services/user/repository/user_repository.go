@@ -185,7 +185,7 @@ func (r *UserRepository) DeleteUser(id string) error {
 // GetUserProfile retrieves a user's profile
 func (r *UserRepository) GetUserProfile(userID string) (*models.UserProfile, error) {
 	query := `
-		SELECT user_id, bio, profile_image_url, title, location, social_links, skills, interests, created_at, updated_at
+		SELECT user_id, bio, profile_image_url, location, social_links, skills, interests, education, experience, preferred_learning_style, created_at, updated_at
 		FROM user_profiles
 		WHERE user_id = $1
 	`
@@ -195,11 +195,13 @@ func (r *UserRepository) GetUserProfile(userID string) (*models.UserProfile, err
 		&profile.UserID,
 		&profile.Bio,
 		&profile.ProfileImageURL,
-		&profile.Title,
 		&profile.Location,
 		&profile.SocialLinks,
 		&profile.Skills,
 		&profile.Interests,
+		&profile.Education,
+		&profile.Experience,
+		&profile.PreferredLearningStyle,
 		&profile.CreatedAt,
 		&profile.UpdatedAt,
 	)
@@ -222,19 +224,21 @@ func (r *UserRepository) UpdateUserProfile(profile *models.UserProfile) error {
 	if err != nil && err.Error() == "profile not found" {
 		// Create new profile
 		query := `
-			INSERT INTO user_profiles (user_id, bio, profile_image_url, title, location, social_links, skills, interests, created_at, updated_at)
-			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+			INSERT INTO user_profiles (user_id, bio, profile_image_url, location, social_links, skills, interests, education, experience, preferred_learning_style, created_at, updated_at)
+			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
 		`
 		_, err := r.db.Exec(
 			query,
 			profile.UserID,
 			profile.Bio,
 			profile.ProfileImageURL,
-			profile.Title,
 			profile.Location,
 			profile.SocialLinks,
 			profile.Skills,
 			profile.Interests,
+			profile.Education,
+			profile.Experience,
+			profile.PreferredLearningStyle,
 			profile.CreatedAt,
 			profile.UpdatedAt,
 		)
@@ -251,24 +255,28 @@ func (r *UserRepository) UpdateUserProfile(profile *models.UserProfile) error {
 		SET 
 			bio = $1, 
 			profile_image_url = $2, 
-			title = $3, 
-			location = $4, 
-			social_links = $5, 
-			skills = $6, 
-			interests = $7, 
-			updated_at = $8
-		WHERE user_id = $9
+			location = $3, 
+			social_links = $4, 
+			skills = $5, 
+			interests = $6, 
+			education = $7, 
+			experience = $8, 
+			preferred_learning_style = $9, 
+			updated_at = $10
+		WHERE user_id = $11
 	`
 
 	_, err = r.db.Exec(
 		query,
 		profile.Bio,
 		profile.ProfileImageURL,
-		profile.Title,
 		profile.Location,
 		profile.SocialLinks,
 		profile.Skills,
 		profile.Interests,
+		profile.Education,
+		profile.Experience,
+		profile.PreferredLearningStyle,
 		profile.UpdatedAt,
 		profile.UserID,
 	)
