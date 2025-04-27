@@ -4,24 +4,13 @@ FROM golang:1.21-alpine AS builder
 WORKDIR /app
 
 # Copy the entire backend directory
-COPY ./ /app/
+COPY . /app/
 
-# Set working directory for Go Modules
-WORKDIR /app/
+# Set working directory where go.mod is located
+WORKDIR /app/backend
 
-# Install required dependencies explicitly
-RUN go get github.com/gin-gonic/gin
-RUN go get github.com/golang-jwt/jwt/v5
-RUN go get github.com/joho/godotenv
-RUN go get github.com/lib/pq
-RUN go get github.com/redis/go-redis/v9
-RUN go get golang.org/x/crypto/bcrypt
-
-# Run go mod tidy to ensure go.sum is properly updated
-RUN go mod tidy
-
-RUN ls -la /app
-RUN ls -la /app/services/user
+# Clean any existing modules and download dependencies
+RUN go clean -modcache && go mod download
 
 # Build the binary with proper path
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /app/user-service ./services/user
