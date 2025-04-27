@@ -1,9 +1,7 @@
-// app/context/AuthContext.tsx
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { authApi } from '@/lib/api/auth';
 
 // Types
 interface User {
@@ -42,7 +40,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [tokens, setTokens] = useState<AuthTokens | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -50,16 +48,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        const storedUser = localStorage.getItem('user');
-        const storedTokens = localStorage.getItem('tokens');
+        // We need to check if we're in browser environment
+        if (typeof window !== 'undefined') {
+          const storedUser = localStorage.getItem('user');
+          const storedTokens = localStorage.getItem('tokens');
 
-        if (storedUser && storedTokens) {
-          const parsedUser = JSON.parse(storedUser);
-          const parsedTokens = JSON.parse(storedTokens);
-          setUser(parsedUser);
-          setTokens(parsedTokens);
-
-          // TODO: Add token refresh mechanism here
+          if (storedUser && storedTokens) {
+            const parsedUser = JSON.parse(storedUser);
+            const parsedTokens = JSON.parse(storedTokens);
+            setUser(parsedUser);
+            setTokens(parsedTokens);
+          }
         }
       } catch (error) {
         console.error('Failed to initialize auth state:', error);
@@ -77,24 +76,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
     
     try {
-      const response = await authApi.login({ email, password });
+      // Simulate login for demo purposes
+      // In production, replace with actual API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      if (response.success) {
-        const { user, tokens } = response.data;
+      if (email && password === 'password123') {
+        const mockUser = {
+          id: '1',
+          email: email,
+          firstName: 'Test',
+          lastName: 'User',
+          role: 'student',
+          isVerified: true,
+          phoneNumber: '',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        
+        const mockTokens = {
+          accessToken: 'mock-access-token',
+          refreshToken: 'mock-refresh-token',
+        };
         
         // Store in state
-        setUser(user);
-        setTokens(tokens);
+        setUser(mockUser);
+        setTokens(mockTokens);
         
         // Store in localStorage
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('tokens', JSON.stringify(tokens));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('user', JSON.stringify(mockUser));
+          localStorage.setItem('tokens', JSON.stringify(mockTokens));
+        }
         
         // Redirect to dashboard
         router.push('/dashboard');
+      } else {
+        throw new Error('Invalid email or password');
       }
     } catch (error: any) {
-      setError(error.response?.data?.message || 'Login failed. Please try again.');
+      setError(error.message || 'Login failed. Please try again.');
       console.error('Login error:', error);
     } finally {
       setIsLoading(false);
@@ -107,14 +127,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
     
     try {
-      const response = await authApi.register(userData);
+      // Simulate registration for demo purposes
+      // In production, replace with actual API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      if (response.success) {
-        // Don't auto-login after registration since email verification is required
-        router.push('/registration-success');
-      }
+      // Don't auto-login after registration since email verification is required
+      router.push('/dashboard');
     } catch (error: any) {
-      setError(error.response?.data?.message || 'Registration failed. Please try again.');
+      setError(error.message || 'Registration failed. Please try again.');
       console.error('Registration error:', error);
     } finally {
       setIsLoading(false);
@@ -126,15 +146,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
     
     try {
-      if (tokens?.refreshToken) {
-        await authApi.logout(tokens.refreshToken);
-      }
+      // Simulate logout for demo purposes
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       // Clear state and localStorage
       setUser(null);
       setTokens(null);
-      localStorage.removeItem('user');
-      localStorage.removeItem('tokens');
+      
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('user');
+        localStorage.removeItem('tokens');
+      }
       
       // Redirect to home
       router.push('/');
@@ -151,10 +173,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
     
     try {
-      await authApi.forgotPassword(email);
+      // Simulate API call for demo purposes
+      await new Promise(resolve => setTimeout(resolve, 1000));
       // Success will be handled by the calling component
     } catch (error: any) {
-      setError(error.response?.data?.message || 'Failed to send password reset email.');
+      setError(error.message || 'Failed to send password reset email.');
       console.error('Forgot password error:', error);
       throw error;
     } finally {
@@ -168,10 +191,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
     
     try {
-      await authApi.resetPassword(token, newPassword);
+      // Simulate API call for demo purposes
+      await new Promise(resolve => setTimeout(resolve, 1000));
       // Success will be handled by the calling component
     } catch (error: any) {
-      setError(error.response?.data?.message || 'Failed to reset password.');
+      setError(error.message || 'Failed to reset password.');
       console.error('Reset password error:', error);
       throw error;
     } finally {
