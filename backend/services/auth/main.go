@@ -10,6 +10,7 @@ import (
 	"github.com/Nikhil9989/psb/backend/services/auth/repository"
 	"github.com/Nikhil9989/psb/backend/services/auth/service"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
 	"github.com/joho/godotenv"
 	
 	// Swagger documentation
@@ -17,6 +18,22 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+// Add this before routes setup
+func setupCORS(router *gin.Engine) {
+    router.Use(cors.New(cors.Config{
+        AllowOrigins:     []string{"http://localhost:3000", "https://your-production-domain.com"},
+        AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+        AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+        ExposeHeaders:    []string{"Content-Length"},
+        AllowCredentials: true,
+        MaxAge:           12 * time.Hour,
+    }))
+}
+
+// In the main function, add this line before registering routes
+setupCORS(router)
+
 
 // @title SKILL BRIDGE Authentication Service API
 // @description API for user authentication and token management
