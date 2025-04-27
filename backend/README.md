@@ -83,40 +83,36 @@ All services are documented using Swagger/OpenAPI. Once services are running, yo
 - User Service: `http://localhost:8081/swagger/index.html`
 - API Gateway: `http://localhost:8080/swagger/index.html`
 
-### Swagger Setup and Generation
+### Generate Swagger Documentation
 
-To generate the Swagger documentation correctly:
+The easiest way to generate Swagger documentation is using the included shell script:
 
-1. Install the required tools:
-```bash
-go install github.com/swaggo/swag/cmd/swag@latest
-```
-
-2. Generate documentation using the centralized swagger models:
 ```bash
 # From the backend directory
-
-# For Auth Service - important to include the root directory for swagger.go
-swag init -g services/auth/main.go -d ./ -o services/auth/docs
-
-# For User Service
-swag init -g services/user/main.go -d ./ -o services/user/docs
-
-# For API Gateway
-swag init -g services/api-gateway/main.go -d ./ -o services/api-gateway/docs
+chmod +x swagger.sh
+./swagger.sh
 ```
 
-3. Each service should import the docs in their main.go:
-```go
-import (
-    // Swagger documentation
-    _ "github.com/Nikhil9989/psb/backend/services/auth/docs"
-    swaggerFiles "github.com/swaggo/files"
-    ginSwagger "github.com/swaggo/gin-swagger"
-)
-```
+This script:
+1. Creates a temporary `swagger-models` directory with all required model definitions
+2. Creates necessary wrapper files for each service
+3. Runs the `swag` command with appropriate parameters for each service
+4. Places the generated docs in the correct locations
 
-For more detailed instructions and common issue solutions, see the [Swagger Documentation README](./docs/README.md).
+If you prefer to run the commands manually:
+
+```bash
+# Install swag tool if not already installed
+go install github.com/swaggo/swag/cmd/swag@latest
+
+# Create swagger-models directory with model definitions
+# See swagger.sh for the contents to put in ./swagger-models/models.go
+
+# Generate docs for each service
+swag init -g services/auth/main.go -d ./services/auth,./swagger-models -o services/auth/docs
+swag init -g services/user/main.go -d ./services/user,./swagger-models -o services/user/docs
+swag init -g services/api-gateway/main.go -d ./services/api-gateway,./swagger-models -o services/api-gateway/docs
+```
 
 ### Authentication API
 
@@ -185,15 +181,24 @@ curl -X POST http://localhost:8082/api/v1/auth/login \
 
 If you encounter issues with Swagger generation:
 
-1. **Type Definition Not Found Error**
-   - Check that you're including the root directory in your `-d` flag to find the swagger.go file
-   - Ensure all model types are defined in swagger.go with proper tags
-   - Make sure handlers are properly importing the packages with model definitions
+1. Make sure the `swag` tool is installed and in your PATH:
+   ```bash
+   go install github.com/swaggo/swag/cmd/swag@latest
+   ```
 
-2. **No Go Files Error**
-   - This warning about the root directory is expected and can be ignored as long as the service-specific directories are found
+2. Run the provided script which creates all necessary files:
+   ```bash
+   ./swagger.sh
+   ```
 
-3. **General Swagger Issues**
-   - Check that all handler functions have proper Swagger annotations
-   - Ensure the main.go file has the correct Swagger configuration header
-   - Verify that all dependencies are properly imported
+3. Check that each service has imports for the Swagger UI:
+   ```go
+   import (
+       // Swagger documentation
+       _ "github.com/Nikhil9989/psb/backend/services/auth/docs" // Replace with appropriate service
+       swaggerFiles "github.com/swaggo/files"
+       ginSwagger "github.com/swaggo/gin-swagger"
+   )
+   ```
+
+4. Ensure handler functions have proper Swagger annotations
