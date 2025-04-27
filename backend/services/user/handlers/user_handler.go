@@ -22,6 +22,17 @@ func NewUserHandler(userRepo *repository.UserRepository) *UserHandler {
 }
 
 // CreateUser handles user creation requests
+// @Summary Create a new user
+// @Description Register a new user in the system
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body models.CreateUserRequest true "User details"
+// @Success 201 {object} models.SuccessResponse{data=models.UserResponse} "User created successfully"
+// @Failure 400 {object} models.ErrorResponse "Invalid request"
+// @Failure 409 {object} models.ErrorResponse "User already exists"
+// @Failure 500 {object} models.ErrorResponse "Internal server error"
+// @Router /users [post]
 func (h *UserHandler) CreateUser(c *gin.Context) {
 	var request models.CreateUserRequest
 
@@ -98,6 +109,16 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 }
 
 // GetUsers handles requests to get all users with pagination
+// @Summary Get all users
+// @Description Retrieves a paginated list of users
+// @Tags users
+// @Produce json
+// @Security BearerAuth
+// @Param page query int false "Page number (default: 1)"
+// @Param page_size query int false "Items per page (default: 10, max: 100)"
+// @Success 200 {object} models.SuccessResponse{data=map[string]interface{}} "Users retrieved successfully"
+// @Failure 500 {object} models.ErrorResponse "Internal server error"
+// @Router /users [get]
 func (h *UserHandler) GetUsers(c *gin.Context) {
 	// Parse pagination parameters
 	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
@@ -144,6 +165,15 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 }
 
 // GetUserByID handles requests to get a user by ID
+// @Summary Get user by ID
+// @Description Retrieves a user by their unique ID
+// @Tags users
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "User ID"
+// @Success 200 {object} models.SuccessResponse{data=models.UserResponse} "User retrieved successfully"
+// @Failure 404 {object} models.ErrorResponse "User not found"
+// @Router /users/{id} [get]
 func (h *UserHandler) GetUserByID(c *gin.Context) {
 	userID := c.Param("id")
 
@@ -170,6 +200,19 @@ func (h *UserHandler) GetUserByID(c *gin.Context) {
 }
 
 // UpdateUser handles requests to update a user
+// @Summary Update user
+// @Description Updates a user's information
+// @Tags users
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "User ID"
+// @Param user body models.UpdateUserRequest true "User details to update"
+// @Success 200 {object} models.SuccessResponse{data=models.UserResponse} "User updated successfully"
+// @Failure 400 {object} models.ErrorResponse "Invalid request"
+// @Failure 404 {object} models.ErrorResponse "User not found"
+// @Failure 500 {object} models.ErrorResponse "Internal server error"
+// @Router /users/{id} [put]
 func (h *UserHandler) UpdateUser(c *gin.Context) {
 	userID := c.Param("id")
 
@@ -223,6 +266,16 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 }
 
 // DeleteUser handles requests to delete a user
+// @Summary Delete user
+// @Description Deletes a user from the system
+// @Tags users
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "User ID"
+// @Success 200 {object} models.SuccessResponse "User deleted successfully"
+// @Failure 404 {object} models.ErrorResponse "User not found"
+// @Failure 500 {object} models.ErrorResponse "Internal server error"
+// @Router /users/{id} [delete]
 func (h *UserHandler) DeleteUser(c *gin.Context) {
 	userID := c.Param("id")
 
@@ -244,6 +297,16 @@ func (h *UserHandler) DeleteUser(c *gin.Context) {
 }
 
 // GetUserProfile handles requests to get a user's profile
+// @Summary Get user profile
+// @Description Retrieves a user's detailed profile
+// @Tags profiles
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "User ID"
+// @Success 200 {object} models.SuccessResponse{data=models.UserProfile} "User profile retrieved successfully"
+// @Failure 404 {object} models.ErrorResponse "User not found"
+// @Failure 500 {object} models.ErrorResponse "Internal server error"
+// @Router /users/{id}/profile [get]
 func (h *UserHandler) GetUserProfile(c *gin.Context) {
 	userID := c.Param("id")
 
@@ -265,6 +328,19 @@ func (h *UserHandler) GetUserProfile(c *gin.Context) {
 }
 
 // UpdateUserProfile handles requests to update a user's profile
+// @Summary Update user profile
+// @Description Updates a user's detailed profile information
+// @Tags profiles
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "User ID"
+// @Param profile body models.UserProfile true "Profile information"
+// @Success 200 {object} models.SuccessResponse{data=models.UserProfile} "User profile updated successfully"
+// @Failure 400 {object} models.ErrorResponse "Invalid request"
+// @Failure 404 {object} models.ErrorResponse "User not found"
+// @Failure 500 {object} models.ErrorResponse "Internal server error"
+// @Router /users/{id}/profile [put]
 func (h *UserHandler) UpdateUserProfile(c *gin.Context) {
 	userID := c.Param("id")
 
@@ -316,6 +392,16 @@ func (h *UserHandler) UpdateUserProfile(c *gin.Context) {
 }
 
 // GetUserPreferences handles requests to get a user's preferences
+// @Summary Get user preferences
+// @Description Retrieves a user's application preferences
+// @Tags preferences
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "User ID"
+// @Success 200 {object} models.SuccessResponse{data=models.UserPreference} "User preferences retrieved successfully"
+// @Failure 404 {object} models.ErrorResponse "User not found"
+// @Failure 500 {object} models.ErrorResponse "Internal server error"
+// @Router /users/{id}/preferences [get]
 func (h *UserHandler) GetUserPreferences(c *gin.Context) {
 	userID := c.Param("id")
 
@@ -337,6 +423,19 @@ func (h *UserHandler) GetUserPreferences(c *gin.Context) {
 }
 
 // UpdateUserPreferences handles requests to update a user's preferences
+// @Summary Update user preferences
+// @Description Updates a user's application preferences
+// @Tags preferences
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "User ID"
+// @Param preferences body models.UserPreference true "User preferences"
+// @Success 200 {object} models.SuccessResponse{data=models.UserPreference} "User preferences updated successfully"
+// @Failure 400 {object} models.ErrorResponse "Invalid request"
+// @Failure 404 {object} models.ErrorResponse "User not found"
+// @Failure 500 {object} models.ErrorResponse "Internal server error"
+// @Router /users/{id}/preferences [put]
 func (h *UserHandler) UpdateUserPreferences(c *gin.Context) {
 	userID := c.Param("id")
 
