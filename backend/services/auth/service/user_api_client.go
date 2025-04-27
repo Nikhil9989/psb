@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Nikhil9989/psb/backend/pkg/models"
+	"github.com/Nikhil9989/psb/backend/pkg/utils"
 )
 
 // UserAPIClient handles communication with the user service
@@ -29,13 +30,30 @@ func NewUserAPIClient(baseURL string) *UserAPIClient {
 // GetUserByEmail retrieves a user by email from the user service
 func (c *UserAPIClient) GetUserByEmail(email string) (*models.User, error) {
 	// In a real implementation, this would make an API call to the user service
-	// For now, we'll simulate it with a hardcoded request and response
-
-	// URL would be something like: {baseURL}/api/v1/users/by-email/{email}
-	// But since we don't have that endpoint yet, we'll skip the actual HTTP call for now
+	// For now, we'll simulate it with a hardcoded test user for development purposes
 	
-	// Dummy implementation for now
-	// In a real implementation, you would make an HTTP request to the user service
+	// Check if this is the test user
+	if email == "test@example.com" {
+		// Create a test user with a hashed version of "yourpassword"
+		hashedPassword, err := utils.HashPassword("yourpassword")
+		if err != nil {
+			return nil, err
+		}
+		
+		return &models.User{
+			ID:          "test-user-id",
+			Email:       "test@example.com",
+			Password:    hashedPassword,
+			FirstName:   "Test",
+			LastName:    "User",
+			Role:        "student",
+			IsVerified:  true,
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
+		}, nil
+	}
+	
+	// For other emails, return user not found
 	return nil, fmt.Errorf("user not found")
 }
 
