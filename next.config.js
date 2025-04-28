@@ -11,8 +11,10 @@ const nextConfig = {
   },
   // Next.js 14 static export configuration
   output: 'export',
-  // No base path needed
+  // Base path for GitHub Pages
   basePath: '/psb',
+  // Add this to ensure assets are correctly referenced
+  assetPrefix: '/psb/',
   trailingSlash: false,
 };
 
